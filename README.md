@@ -6,7 +6,7 @@ Jetpack Cat adds Overwatch Commands to Discord including:
 * Player SR
 * Overwatch League info
 
-Feel free to oepn a pull request or submit any issues.
+Feel free to open a pull request or submit any issues.
 
 ## [Usage](www.link.to.future.website)
 

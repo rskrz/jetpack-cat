@@ -3,8 +3,8 @@ from discord.ext import commands
 from bs4 import BeautifulSoup
 import requests
 from helpers import *
-import asyncio
-from multiprocessing import Pool, Process
+#import asyncio
+#from multiprocessing import Pool, Process
 
 class Tespa(commands.Cog):
     def __init__(self, bot):

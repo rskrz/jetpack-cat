@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import requests
 from helpers import *
-import asyncio
+#import asyncio
 
 class Competitive(commands.Cog):
     def __init__(self, bot):

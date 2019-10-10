@@ -195,3 +195,188 @@ REFERENCE IN PARLIAMENT TO THE NANTUCKET WHALE-FISHERY.
 BURKE. (SOMEWHERE.)
 
 
+"A tenth branch of the king's ordinary revenue, said to be grounded
+on the consideration of his guarding and protecting the seas from
+pirates and robbers, is the right to royal fish, which are whale and
+sturgeon.  And these, when either thrown ashore or caught near the
+coast, are the property of the king." --BLACKSTONE.
+
+"Soon to the sport of death the crews repair:
+Rodmond unerring o'er his head suspends
+The barbed steel, and every turn attends."
+--FALCONER'S SHIPWRECK.
+
+"Bright shone the roofs, the domes, the spires,
+And rockets blew self driven,
+To hang their momentary fire
+Around the vault of heaven.
+
+"So fire with water to compare,
+The ocean serves on high,
+Up-spouted by a whale in air,
+To express unwieldy joy." --COWPER, ON THE QUEEN'S
+VISIT TO LONDON.
+
+"Ten or fifteen gallons of blood are thrown out of the heart at a
+stroke, with immense velocity." --JOHN HUNTER'S ACCOUNT OF THE
+DISSECTION OF A WHALE.  (A SMALL SIZED ONE.)
+
+"The aorta of a whale is larger in the bore than the main pipe of the
+water-works at London Bridge, and the water roaring in its passage
+through that pipe is inferior in impetus and velocity to the blood
+gushing from the whale's heart." --PALEY'S THEOLOGY.
+
+"The whale is a mammiferous animal without hind feet." --BARON
+CUVIER.
+
+"In 40 degrees south, we saw Spermacetti Whales, but did not take any
+till the first of May, the sea being then covered with them."
+--COLNETT'S VOYAGE FOR THE PURPOSE OF EXTENDING THE SPERMACETI WHALE
+FISHERY.
+
+"In the free element beneath me swam,
+Floundered and dived, in play, in chace, in battle,
+Fishes of every colour, form, and kind;
+Which language cannot paint, and mariner
+Had never seen; from dread Leviathan
+To insect millions peopling every wave:
+Gather'd in shoals immense, like floating islands,
+Led by mysterious instincts through that waste
+And trackless region, though on every side
+Assaulted by voracious enemies,
+Whales, sharks, and monsters, arm'd in front or jaw,
+With swords, saws, spiral horns, or hooked fangs."
+--MONTGOMERY'S WORLD BEFORE THE FLOOD.
+
+"Io!  Paean!  Io! sing.
+To the finny people's king.
+Not a mightier whale than this
+In the vast Atlantic is;
+Not a fatter fish than he,
+Flounders round the Polar Sea." --CHARLES LAMB'S TRIUMPH OF THE
+WHALE.
+
+"In the year 1690 some persons were on a high hill observing the
+whales spouting and sporting with each other, when one observed:
+there--pointing to the sea--is a green pasture where our children's
+grand-children will go for bread." --OBED MACY'S HISTORY OF
+NANTUCKET.
+
+"I built a cottage for Susan and myself and made a gateway in the
+form of a Gothic Arch, by setting up a whale's jaw bones."
+--HAWTHORNE'S TWICE TOLD TALES.
+
+"She came to bespeak a monument for her first love, who had been
+killed by a whale in the Pacific ocean, no less than forty years
+ago." --IBID.
+
+"No, Sir, 'tis a Right Whale," answered Tom; "I saw his sprout; he
+threw up a pair of as pretty rainbows as a Christian would wish to
+look at.  He's a raal oil-butt, that fellow!" --COOPER'S PILOT.
+
+"The papers were brought in, and we saw in the Berlin Gazette that
+whales had been introduced on the stage there." --ECKERMANN'S
+CONVERSATIONS WITH GOETHE.
+
+"My God!  Mr. Chace, what is the matter?"  I answered, "we have been
+stove by a whale." --"NARRATIVE OF THE SHIPWRECK OF THE WHALE SHIP
+ESSEX OF NANTUCKET, WHICH WAS ATTACKED AND FINALLY DESTROYED BY A
+LARGE SPERM WHALE IN THE PACIFIC OCEAN."  BY OWEN CHACE OF NANTUCKET,
+FIRST MATE OF SAID VESSEL.  NEW YORK, 1821.
+
+"A mariner sat in the shrouds one night,
+The wind was piping free;
+Now bright, now dimmed, was the moonlight pale,
+And the phospher gleamed in the wake of the whale,
+As it floundered in the sea." --ELIZABETH OAKES SMITH.
+
+"The quantity of line withdrawn from the boats engaged in the capture
+of this one whale, amounted altogether to 10,440 yards or nearly six
+English miles. ...
+
+"Sometimes the whale shakes its tremendous tail in the air, which,
+cracking like a whip, resounds to the distance of three or four
+miles." --SCORESBY.
+
+"Mad with the agonies he endures from these fresh attacks, the
+infuriated Sperm Whale rolls over and over; he rears his enormous
+head, and with wide expanded jaws snaps at everything around him; he
+rushes at the boats with his head; they are propelled before him with
+vast swiftness, and sometimes utterly destroyed. ...  It is a matter
+of great astonishment that the consideration of the habits of so
+interesting, and, in a commercial point of view, so important an
+animal (as the Sperm Whale) should have been so entirely neglected,
+or should have excited so little curiosity among the numerous, and
+many of them competent observers, that of late years, must have
+possessed the most abundant and the most convenient opportunities of
+witnessing their habitudes." --THOMAS BEALE'S HISTORY OF THE SPERM
+WHALE, 1839.
+
+"The Cachalot" (Sperm Whale) "is not only better armed than the True
+Whale" (Greenland or Right Whale) "in possessing a formidable weapon
+at either extremity of its body, but also more frequently displays a
+disposition to employ these weapons offensively and in manner at once
+so artful, bold, and mischievous, as to lead to its being regarded as
+the most dangerous to attack of all the known species of the whale
+tribe." --FREDERICK DEBELL BENNETT'S WHALING VOYAGE ROUND THE GLOBE,
+1840.
+
+October 13.  "There she blows," was sung out from the mast-head.
+"Where away?" demanded the captain.
+"Three points off the lee bow, sir."
+"Raise up your wheel.  Steady!"  "Steady, sir."
+"Mast-head ahoy!  Do you see that whale now?"
+"Ay ay, sir!  A shoal of Sperm Whales!  There she blows!  There she
+breaches!"
+"Sing out! sing out every time!"
+"Ay Ay, sir!  There she blows! there--there--THAR she
+blows--bowes--bo-o-os!"
+"How far off?"
+"Two miles and a half."
+"Thunder and lightning! so near!  Call all hands." --J. ROSS BROWNE'S
+ETCHINGS OF A WHALING CRUIZE.  1846.
+
+"The Whale-ship Globe, on board of which vessel occurred the horrid
+transactions we are about to relate, belonged to the island of
+Nantucket." --"NARRATIVE OF THE GLOBE," BY LAY AND HUSSEY SURVIVORS.
+A.D. 1828.
+
+Being once pursued by a whale which he had wounded, he parried the
+assault for some time with a lance; but the furious monster at length
+rushed on the boat; himself and comrades only being preserved by
+leaping into the water when they saw the onset was inevitable."
+--MISSIONARY JOURNAL OF TYERMAN AND BENNETT.
+
+"Nantucket itself," said Mr. Webster, "is a very striking and
+peculiar portion of the National interest.  There is a population of
+eight or nine thousand persons living here in the sea, adding largely
+every year to the National wealth by the boldest and most persevering
+industry." --REPORT OF DANIEL WEBSTER'S SPEECH IN THE U.  S.  SENATE,
+ON THE APPLICATION FOR THE ERECTION OF A BREAKWATER AT NANTUCKET.
+1828.
+
+
+Finally, I always go to sea as a sailor, because of the wholesome
+exercise and pure air of the fore-castle deck.  For as in this world,
+head winds are far more prevalent than winds from astern (that is, if
+you never violate the Pythagorean maxim), so for the most part the
+Commodore on the quarter-deck gets his atmosphere at second hand from
+the sailors on the forecastle.  He thinks he breathes it first; but
+not so.  In much the same way do the commonalty lead their leaders in
+many other things, at the same time that the leaders little suspect
+it.  But wherefore it was that after having repeatedly smelt the sea
+as a merchant sailor, I should now take it into my head to go on a
+whaling voyage; this the invisible police officer of the Fates, who
+has the constant surveillance of me, and secretly dogs me, and
+influences me in some unaccountable way--he can better answer than
+any one else.  And, doubtless, my going on this whaling voyage,
+formed part of the grand programme of Providence that was drawn up a
+long time ago.  It came in as a sort of brief interlude and solo
+between more extensive performances.  I take it that this part of the
+bill must have run something like this:
+
+
+"GRAND CONTESTED ELECTION FOR THE PRESIDENCY OF THE UNITED STATES.
+"WHALING VOYAGE BY ONE ISHMAEL.
+"BLOODY BATTLE IN AFFGHANISTAN."
+

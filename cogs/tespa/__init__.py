@@ -24,7 +24,7 @@ class Tespa(commands.Cog):
             team = s.find('span', class_="hdg-em").text
             bnet = [t.next_element.next_element.next_element.text for t in s.find_all('td', class_='compete-player-name')]
         else:
-            s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5c7ccfe88d004d0345bbd0cd/teams?name={}'.format(team)).json()
+            s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5d6fdb02c747ff732da36eb4/teams?name={}'.format(team)).json()
             bnet = [p['inGameName'] for p in s[0]['players']]
         outputDict = {}
         average = []
@@ -45,7 +45,7 @@ class Tespa(commands.Cog):
         avg = sum(average)//len(average)
         return outputDict, team, avg
 
-    @commands.command()
+    @commands.command(aliases=['od'])
     async def tespa(self, ctx, team : str):
         team_players, teamName, avg = await self.analyzeTeam(team)
         e = rankEmoji(avg)

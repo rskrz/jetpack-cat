@@ -6,11 +6,11 @@ bot = commands.Bot(command_prefix='>')
 
 @bot.event
 async def on_ready():
-    print(f'ready {bot.user}')
+    print(f'Ready {bot.user}')
 
 for filename in os.listdir('./cogs'):
     bot.load_extension(f'cogs.{filename}')
-    print(f'{filename} loaded')
+    print(f'{filename} cog loaded')
 
 try:
     with open('pass.txt') as p:

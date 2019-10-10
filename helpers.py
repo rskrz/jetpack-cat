@@ -59,3 +59,26 @@ hero_dict = {
         "damage" : "<:Dps:619262646834692106>",
         "support" : "<:Support:619262646708863007>"
         }
+
+teams = {
+        ("ATL","atl","atlanta","reign") : ["Atlanta Reign",0x910f1b,"https://bnetcmsus-a.akamaihd.net/cms/page_media/32/32MTX0PLEDY31542673991836.png","<:reign:546095303909048340>","7698"],
+        ("BOS","bos","boston","uprising") : ["Boston Uprising",0x174b97,"https://bnetcmsus-a.akamaihd.net/cms/page_media/43UINMGMA83X1513383982827.png","<:uprising:546095303598538773>","4402"],
+        ("CDH","cdh","chengdu","hunters") : ["Chengdu Hunters",0xffa000,"https://bnetcmsus-a.akamaihd.net/cms/page_media/st/STKSER89UHKO1542674031469.png","<:hunters:546095303585955852>","7692"],
+        ("DAL","dal","dallas","fuel") : ["Dallas Fuel",0x0072ce,"https://bnetcmsus-a.akamaihd.net/cms/page_media/NO44N7DDJAPF1508792362936.png","<:fuel:546095303867105280>","4523"],
+        ("FLA","fla","florida","mayhem") : ["Florida Mayhem",0xfeda00,"https://bnetcmsus-a.akamaihd.net/cms/page_media/4GO273NATVWM1508792362854.png","<:mayhem:546095303732887553>","4407"],
+        ("GLA","gla","gladiators","lag") : ["Los Angeles Gladiators",0x3c1053,"https://bnetcmsus-a.akamaihd.net/cms/page_media/3AEMOZZL76PF1508792362892.PNG","<:gladiators:546095303745601557>","4406"],
+        ("GZC","gzc","guangzhou","charge") : ["Guangzhou Charge",0x67a2b2,"https://bnetcmsus-a.akamaihd.net/cms/page_media/sz/SZQVDGE3F1TE1542674048320.png","<:charge:546095303560921110>","7699"],
+        ("HOU","hou","houston","outlaws") : ["Houston Outlaws",0x97d700,"https://bnetcmsus-a.akamaihd.net/cms/gallery/2YF5VLIMGZVA1546557680222.png","<:outlaws:546095303892140032>","4525"],
+        ("HZS","hzs","hangzhou","spark") : ["Hangzhou Spark",0xfb7299,"https://bnetcmsus-a.akamaihd.net/cms/gallery/QQ8MNSYYJGDK1544640571357.png","<:spark:546095303757922305>","7693"],
+        ("LDN","ldn","london","spitfire") : ["London Spitfire",0x59cbe8,"https://bnetcmsus-a.akamaihd.net/cms/page_media/NW461AQIYQMK1508792363133.png","<:spitfire:546095304332673034>","4410"],
+        ("NYE","nye","nyxl","new york","excelsior") : ["New York Excelsior",0x0f57ea,"https://bnetcmsus-a.akamaihd.net/cms/page_media/9r/9RYLM8FICLJ01508818792450.png","<:excelsior:546095303678230529>","4403"],
+        ("PAR","par","paris","eternal") : ["Paris Eternal",0x8d042d,"https://bnetcmsus-a.akamaihd.net/cms/page_media/qm/QM7JE0THABVT1542674071412.png","<:eternal:546095304206712855>","7694"],
+        ("PHI","phi","philadelphia","fusion") : ["Philadelphia Fusion",0xf99f29,"https://bnetcmsus-a.akamaihd.net/cms/page_media/3JZTLCPH37QD1508792362853.png","<:fusion:546095303988740107>","4524"],
+        ("SEO","seo","seoul","dynasty") : ["Seoul Dynasty",0xaa8a00,"https://bnetcmsus-a.akamaihd.net/cms/page_media/LHRSIW3NWH211508792362796.png","<:dynasty:546095303946797058>","4409"],
+        ("SFS","sfs","san francisco","shock") : ["San Francisco Shock",0xfc4c02,"https://bnetcmsus-a.akamaihd.net/cms/page_media/YO24NN5KAOFL1508792362791.png","<:shock:546095303669973001>","4404"],
+        ("SHD","shd","shanghai","dragons") : ["Shanghai Dragons",0xd22630,"https://bnetcmsus-a.akamaihd.net/cms/page_media/B0R64QSNCDLX1508792362793.png","<:dragons:546095303661584414>","4408"],
+        ("TOR","tor","toronto","defiant") : ["Toronto Defiant",0x000000,"https://bnetcmsus-a.akamaihd.net/cms/page_media/g0/G05QL2P5A92E1542674081932.png","<:defiant:546095303728693258>","7695"],
+        ("VAL","val","valiant","lav") : ["Los Angeles Valiant",0x004438,"https://bnetcmsus-a.akamaihd.net/cms/page_media/0D8BNUWVZP6B1508792362890.PNG","<:valiant:546095304139603978>","4405"],
+        ("VAN","van","vancouver","titans") : ["Vancouver Titans",0x09226b,"https://bnetcmsus-a.akamaihd.net/cms/gallery/F1WE9LBKIGHD1543976752064.png","<:titans:546095303854391302>","7696"],
+        ("WAS","was","washington","justice") : ["Washington Justice",0x990034,"https://bnetcmsus-a.akamaihd.net/cms/page_media/95UE5OJKSFQF1543968718489.png","<:justice:546095304030552074>","7697"],
+        }

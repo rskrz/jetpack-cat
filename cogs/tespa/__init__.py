@@ -4,35 +4,50 @@ from bs4 import BeautifulSoup
 import requests
 from helpers import *
 import asyncio
-
-async def analyzeTeam(self, team):
-    competitive = self.bot.get_cog('Competitive')
-    if 'tespa' in team:
-        s = BeautifulSoup(requests.get(team).content, 'html.parser')
-        team = s.find('span', class_="hdg-em").text
-        bnet = [t.next_element.next_element.next_element.text for t in s.find_all('td', class_='compete-player-name')]
-    else:
-        s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5c7ccfe88d004d0345bbd0cd/teams?name={}'.format(team)).json()
-        bnet = [p['inGameName'] for p in s[0]['players']]
-    outputDict = {}
-    average = []
-    for player in bnet:
-        player_url, avatar, skill_rating, role_info = competitive.playerInfo(player)
-        if skill_rating is not 0:
-            average.append(skill_rating)
-        top_role = [{role: role_info[role]} for role in role_info if role_info[role][0] == max(role[0] for role in role_info.values())][0]
-        outputDict[player] = (skill_rating,top_role)
-    avg = sum(average)//len(average)
-    return outputDict, team, avg
+from multiprocessing import Pool, Process
 
 class Tespa(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self._last_member = None
+        self.competitive = self.bot.get_cog('Competitive')
+
+    '''
+    async def get_player(self,player):
+        player_url, avatar, skill_rating, role_info = await self.competitive.playerInfo(player)
+        top_role = [{role: role_info[role]} for role in role_info if role_info[role][0] == max(role[0] for role in role_info.values())][0]
+        return player, skill_rating, top_role
+    '''
+
+    async def analyzeTeam(self, team):
+        if 'tespa' in team:
+            s = BeautifulSoup(requests.get(team).content, 'html.parser')
+            team = s.find('span', class_="hdg-em").text
+            bnet = [t.next_element.next_element.next_element.text for t in s.find_all('td', class_='compete-player-name')]
+        else:
+            s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5c7ccfe88d004d0345bbd0cd/teams?name={}'.format(team)).json()
+            bnet = [p['inGameName'] for p in s[0]['players']]
+        outputDict = {}
+        average = []
+        '''
+        pool = Pool(processes=12)
+        for response in pool.map(self.get_player, bnet):
+            outputDict[response[0]] = tuple(response[2:])
+            skill_rating = response[1]
+            if skill_rating:
+                average.append(skill_rating)
+        '''
+        for player in bnet:
+            player_url, avatar, skill_rating, role_info = await self.competitive.playerInfo(player)
+            if skill_rating is not 0:
+                average.append(skill_rating)
+            top_role = [{role: role_info[role]} for role in role_info if role_info[role][0] == max(role[0] for role in role_info.values())][0]
+            outputDict[player] = (skill_rating,top_role)
+        avg = sum(average)//len(average)
+        return outputDict, team, avg
 
     @commands.command()
     async def tespa(self, ctx, team : str):
-        team_players, teamName, avg = await analyzeTeam(self, team)
+        team_players, teamName, avg = await self.analyzeTeam(team)
         e = rankEmoji(avg)
         if "tespa" in team:
             embed = discord.Embed(title=teamName, url=team, description="Average: "+str(avg)+e, color=0xff8040)

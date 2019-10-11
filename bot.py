@@ -8,6 +8,7 @@ bot = commands.Bot(command_prefix='.')
 @bot.event
 async def on_ready():
     print(f'Ready {bot.user}')
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game('https://jetpack-cat.herokuapp.com'))
 
 def owl_schedule(week : int):
     import requests

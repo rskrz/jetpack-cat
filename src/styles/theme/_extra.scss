@@ -5,16 +5,15 @@
 }
 
 .router {
+  background-color: rgb(152,36,37);
   @extend .f3, .fw5;
   :link {
     color: $primary-text-color;
     text-decoration: none;
   }
-  :after {
-    content: "";
-    display: block;
-    margin: 0 auto;
-    width: 70%;
-    border-bottom: 1px solid gray;
-  }
+}
+
+
+.banner {
+  background-color: $banner-color;
 }

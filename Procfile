@@ -1,2 +1,2 @@
 worker: python bot.py $PORT
-web: npm start
+web: npm run start

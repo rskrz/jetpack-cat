@@ -1,0 +1,20 @@
+@import './_color.scss';
+
+.main-bg {
+  background-color: $primary-text-color;
+}
+
+.router {
+  @extend .f3, .fw5;
+  :link {
+    color: $primary-text-color;
+    text-decoration: none;
+  }
+  :after {
+    content: "";
+    display: block;
+    margin: 0 auto;
+    width: 70%;
+    border-bottom: 1px solid gray;
+  }
+}

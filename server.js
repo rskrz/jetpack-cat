@@ -9,3 +9,8 @@ const port = process.env.PORT || 8080;
 app.listen(port);
 
 console.log("Listening on port: " + port);
+
+var http = require("http");
+setInterval(function() {
+    http.get("jetpack-cat.herokuapp.com");
+}, 300000);

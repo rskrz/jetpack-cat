@@ -13,4 +13,4 @@ console.log("Listening on port: " + port);
 var http = require("https");
 setInterval(function() {
     http.get("https://jetpack-cat.herokuapp.com/#/");
-}, 3);
+}, 300000);

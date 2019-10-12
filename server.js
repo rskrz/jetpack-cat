@@ -10,7 +10,7 @@ app.listen(port);
 
 console.log("Listening on port: " + port);
 
-var http = require("http");
+var http = require("https");
 setInterval(function() {
-    http.get("jetpack-cat.herokuapp.com");
-}, 300000);
+    http.get("https://jetpack-cat.herokuapp.com/#/");
+}, 3);

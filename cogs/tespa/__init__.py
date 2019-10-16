@@ -9,7 +9,6 @@ from helpers import *
 class Tespa(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.competitive = self.bot.get_cog('Competitive')
 
     '''
     async def get_player(self,player):
@@ -19,6 +18,7 @@ class Tespa(commands.Cog):
     '''
 
     async def analyzeTeam(self, team):
+        competitive = self.bot.get_cog('Competitive')
         if 'tespa' in team:
             s = BeautifulSoup(requests.get(team).content, 'html.parser')
             team = s.find('span', class_="hdg-em").text
@@ -37,7 +37,7 @@ class Tespa(commands.Cog):
                 average.append(skill_rating)
         '''
         for player in bnet:
-            player_url, avatar, skill_rating, role_info = await self.competitive.playerInfo(player)
+            player_url, avatar, skill_rating, role_info = await competitive.playerInfo(player)
             if skill_rating is not 0:
                 average.append(skill_rating)
             top_role = [{role: role_info[role]} for role in role_info if role_info[role][0] == max(role[0] for role in role_info.values())][0]

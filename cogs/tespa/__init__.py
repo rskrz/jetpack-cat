@@ -62,7 +62,7 @@ class Tespa(commands.Cog):
             role_info = team_players[player][1]
             role = list(role_info.keys())[0]
             role_rating = list(role_info.values())[0][0]
-            heroes = list(role_info.values())[0][1]
+            heroes = list(role_info.values())[0][1][:3]
             role_emoji = hero_dict[role.lower()]
             role_rank_emoji = rankEmoji(role_rating)
             hero_emojis = ""

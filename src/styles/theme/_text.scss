@@ -6,8 +6,13 @@ p {
   @extend .f5;
 }
 
+h1 {
+  font-size: 2.75rem;
+  color: $background-color;
+}
+
 h2 {
-  color: $primary-text-color;
+  color: $background-color;
   @extend .f2, .fw5;
 }
 

@@ -237,7 +237,7 @@ async def run_bot():
             secret = p.read()
         await bot.start(secret)
     except:
-        bot.start(os.environ.get('secret_key'))
+        await bot.start(os.environ.get('secret_key'))
 
 if __name__ == "__main__":
     import asyncio

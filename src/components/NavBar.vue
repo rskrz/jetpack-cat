@@ -13,7 +13,7 @@
       .dn-ns.mr2
         button(@click="display=!display").menubutton
           i.fa.fa-bars
-    div(v-if="display").topnav.tan.dn-ns.f3
+    div(v-if="display").topnav.dn-ns.f3
       router-link(to="/").menulink Home
       router-link(to="commands").menulink Commands
       a(href="https://discordapp.com/oauth2/authorize?client_id=630828400981966848&permissions=321600&scope=bot").menulink Invite

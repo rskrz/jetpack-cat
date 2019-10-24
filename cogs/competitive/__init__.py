@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 import requests
 from helpers import *
-#import asyncio
 
 class Competitive(commands.Cog):
     def __init__(self, bot):
@@ -14,10 +13,8 @@ class Competitive(commands.Cog):
         data = requests.get(url).json()
         avatar = data['icon']
         sr = data['rating']
-        role_info = {"tank": (0,[]), "damage": (0,[]), "support": (0,[])}
         try:
-            for role in data['ratings']:
-                role_info[role['role']] = (role['level'],[])
+            role_info = {role['role']: (role['level'],[]) for role in data['ratings']}
         except:
             return [player_url,avatar,sr,role_info]
         conv = lambda v: sum([a*b for a,b in zip([1,60,3600], map(int,v[1].split(':')[::-1]))])

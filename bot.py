@@ -2,11 +2,20 @@ import discord
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='.')
+bot.remove_command('help')
+
+@bot.command()
+async def help(ctx):
+    await ctx.send("Go to http://jetpackcat.tech/#/Commands for a list of available commands.")
 
 @bot.event
 async def on_ready():
     print(f'Ready {bot.user}')
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
+
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.send("Unknown command. Go to http://jetpackcat.tech/#/Commands for a list of available commands.")
 
 def owl_schedule(week : int):
     import requests

@@ -1,5 +1,4 @@
 beautifulsoup4==4.8.1
-DateTime==4.3
 discord.py==1.2.3
 pytz==2019.3
 requests==2.22.0

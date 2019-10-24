@@ -23,7 +23,7 @@
 }
 
 .invite {
-  width: 24rem;
+  //width: 24rem;
   height: 6rem;
   color: $background-color;
   text-decoration: none;
@@ -31,12 +31,12 @@
   background-color: $secondary-color;
   cursor: pointer;
   transition: background-color 0.5s ease-out;
-  box-shadow: 0 0 20px $background-color;;
+  box-shadow: 0 0 20px white;
   @extend .br4;
 }
 
 .invite:hover {
-  background-color: $background-color;
+  background-color: white;
   box-shadow: 0 0 20px $background-color;
 }
 
@@ -64,4 +64,58 @@
 
 a.rl:hover, .rl:hover {
   color: $primary-color;
+}
+
+.topnav {
+  overflow: hidden;
+  position: relative;
+  :visited {
+    color: $background-color;
+  }
+  :active, :hover {
+    color: $primary-color;
+  }
+  :before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 80%;
+    left: 10%;
+    border-top: 1px solid $background-color;
+  }
+}
+
+.topnav #myLinks {
+  display: none;
+  background-color: $secondary-color;
+}
+
+.menulink {
+  padding: 14px 16px;
+  text-decoration: none;
+  display: block;
+  background-color: $secondary-color;
+}
+
+.menubutton {
+  background-color: $secondary-color;
+  border: none;
+  color: $background-color;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.redtxt {
+  color: $primary-color;
+}
+
+.commands-bg {
+  background-color: $primary-color;
+}
+
+tr.sel:hover {
+  background-color: $secondary-color;
 }

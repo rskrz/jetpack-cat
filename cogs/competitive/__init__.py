@@ -7,16 +7,17 @@ class Competitive(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    async def playerInfo(self, player):
+    async def playerInfo(self, ctx, player):
         player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}?mode=competitive"
         url = f"https://ow-api.com/v1/stats/pc/us/{'-'.join(player.split('#'))}/complete"
         data = requests.get(url).json()
-        avatar = data['icon']
-        sr = data['rating']
-        try:
-            role_info = {role['role']: (role['level'],[]) for role in data['ratings']}
-        except:
-            return [player_url,avatar,sr,role_info]
+        role_info = {"tank": (0,[]), "damage": (0,[]), "support": (0,[])}
+        try: sr = data['rating']
+        except: sr = 0
+        try: avatar = data['icon']
+        except: avatar = "https://gamepedia.cursecdn.com/overwatch_gamepedia/2/2a/PI_Overwatch_Logo_White.png?version=e0bd15021df01e1db2c937d40d3d944c"
+        try: role_info = {role['role']: (role['level'],[]) for role in data['ratings']}
+        except: return [player_url,avatar,sr,role_info]
         conv = lambda v: sum([a*b for a,b in zip([1,60,3600], map(int,v[1].split(':')[::-1]))])
         play_time = sorted([[hero, topHeroes['timePlayed']] for hero, topHeroes in data['competitiveStats']['topHeroes'].items()], key=conv)[::-1]
         for hero in play_time:
@@ -30,7 +31,10 @@ class Competitive(commands.Cog):
     
     @commands.command()
     async def sr(self, ctx, player : str):
-        player_url, avatar, skill_rating, role_info = await self.playerInfo(player)
+        try:
+            player_url, avatar, skill_rating, role_info = await self.playerInfo(ctx, player)
+        except:
+            return await ctx.send("Player not found.")
         emoji = rankEmoji(skill_rating)
         embed = discord.Embed(title=player, url=player_url, description=f"{emoji}{skill_rating}", inline=False, color=0xff8900)
         embed.set_thumbnail(url=avatar)

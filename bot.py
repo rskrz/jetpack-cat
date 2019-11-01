@@ -166,8 +166,13 @@ def playerInfo(player):
     except: sr = 0
     try: avatar = data['icon']
     except: avatar = "avatar"
-    try: role_info = {role['role']: (role['level'],[]) for role in data['ratings']}
-    except: return [player_url,avatar,sr,role_info]
+    try: 
+        role_info = {role['role']: (role['level'],[]) for role in data['ratings']}
+        roles = ['tank','damage','support']
+        for r in roles:
+            if r not in role_info.keys(): role_info[r] = (0,[])
+    except: 
+        return [player_url,avatar,sr,role_info]
     conv = lambda v: sum([a*b for a,b in zip([1,60,3600], map(int,v[1].split(':')[::-1]))])
     play_time = sorted([[hero, topHeroes['timePlayed']] for hero, topHeroes in data['competitiveStats']['topHeroes'].items()], key=conv)[::-1]
     for hero in play_time:

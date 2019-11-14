@@ -196,7 +196,7 @@ async def tespa(ctx, team : str):
         teamName = s.find('span', class_="hdg-em").text
         players = [t.next_element.next_element.next_element.text for t in s.find_all('td', class_='compete-player-name')]
         embed = discord.Embed(title=teamName, url=team, description="Overwatch Collegiate Championship: Preseason", color=0xff8040)
-        embed.set_thumbnail(url="https://bnetcmsus-a.akamaihd.net/cms/page_media/ZLBKJ6G87QM31492710433537.png")
+        embed.set_thumbnail(url="https://pbs.twimg.com/profile_images/1148303026643488768/xcH5WwnX_400x400.png")
     else:
         s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5d6fdb02c747ff732da36eb4/teams?name={}'.format(team)).json()
         url = f"https://battlefy.com/teams/{s[0]['persistentTeamID']}"

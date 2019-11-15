@@ -12,11 +12,11 @@ async def help(ctx):
 async def on_ready():
     print(f'Ready {bot.user}')
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
-'''
+
 @bot.event
 async def on_command_error(ctx, error):
     await ctx.send("Error. Go to http://jetpackcat.tech/#/Commands for a list of available commands.")
-'''
+
 def owl_schedule(week : int):
     import requests
     from datetime import datetime

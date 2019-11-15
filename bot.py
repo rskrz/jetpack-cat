@@ -12,11 +12,11 @@ async def help(ctx):
 async def on_ready():
     print(f'Ready {bot.user}')
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
-
+'''
 @bot.event
 async def on_command_error(ctx, error):
     await ctx.send("Error. Go to http://jetpackcat.tech/#/Commands for a list of available commands.")
-
+'''
 def owl_schedule(week : int):
     import requests
     from datetime import datetime
@@ -231,8 +231,12 @@ async def tespa(ctx, team : str):
             role_rating = ""
             hero_emojis = ""
         embed.add_field(name = f"{player}: {e}{skill_rating}", value = f"{role_emoji} {role_rank_emoji}{role_rating} {hero_emojis}", inline = False)
-    avg = sum(average)//len(average)
-    h_avg = sum(highest_avg)//len(highest_avg)
+    if average:
+        avg = sum(average)//len(average)
+        h_avg = sum(highest_avg)//len(highest_avg)
+    else: 
+        avg = 0
+        h_avg = 0
     h_e = rankEmoji(h_avg)
     a_e = rankEmoji(avg)
     embed.add_field(name="Average", value = f"{a_e}{avg}", inline=False)

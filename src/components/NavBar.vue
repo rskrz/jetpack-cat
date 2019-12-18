@@ -3,7 +3,10 @@
     .h4-ns.w-100.flex.flex-row.items-center.router.justify-between
       link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
       .flex.items-center
-        img(src="../assets/logos/kot2.png" alt="Jetpack Cat Logo").h3.h4-l.mh5-l.mh3
+        picture
+          source(type="image/webp" srcset="../assets/logos/kot2.webp")
+          source(type="image/png" srcset="../assets/logos/kot2.png")
+          img(src="../assets/logos/kot2.png" alt="Jetpack Cat Logo").h3.h4-l.mh5-l.mh3
         h1.f1-l.f2 Jetpack Cat
       .flex.dn.db-ns
         router-link(to="/").mr4.rl Home
@@ -11,7 +14,7 @@
         a(href="https://discordapp.com/oauth2/authorize?client_id=630828400981966848&permissions=321600&scope=bot").mr4.rl Invite
         a(href="https://github.com/rskrz/jetpack-cat").mr4.rl GitHub
       .dn-ns.mr2
-        button(@click="display=!display").menubutton
+        button(@click="display=!display" aria-label="Menu Dropdown").menubutton
           i.fa.fa-bars
     div(v-if="display").topnav.dn-ns.f3
       router-link(to="/").menulink Home

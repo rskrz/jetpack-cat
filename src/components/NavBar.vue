@@ -3,7 +3,7 @@
     .h4-ns.w-100.flex.flex-row.items-center.router.justify-between
       link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
       .flex.items-center
-        img(src="../assets/logos/kot2.png").h3.h4-l.mh5-l.mh3
+        img(src="../assets/logos/kot2.png" alt="Jetpack Cat Logo").h3.h4-l.mh5-l.mh3
         h1.f1-l.f2 Jetpack Cat
       .flex.dn.db-ns
         router-link(to="/").mr4.rl Home
@@ -29,7 +29,7 @@ export default class NavBar extends Vue {
   data() {
     return {
       display: false
-    }
+    };
   }
 }
 </script>

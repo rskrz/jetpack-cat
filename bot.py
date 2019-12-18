@@ -6,7 +6,7 @@ bot.remove_command('help')
 
 @bot.command()
 async def help(ctx):
-    await ctx.send("Go to http://jetpackcat.tech/#/Commands for a list of available commands.")
+    await ctx.send("Go to https://jetpackcat.tech/#/Commands for a list of available commands.")
 
 @bot.event
 async def on_ready():

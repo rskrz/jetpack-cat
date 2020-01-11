@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext import tasks
 
 bot = commands.Bot(command_prefix='.')
 bot.remove_command('help')
@@ -15,7 +16,7 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
-    await ctx.send("Error. Go to http://jetpackcat.tech/#/Commands for a list of available commands.")
+    await ctx.send("Error. Go to https://jetpackcat.tech/#/Commands for a list of available commands.")
 
 def owl_schedule(week : int):
     import requests
@@ -156,7 +157,7 @@ async def standings(ctx):
             await msg.edit(embed=new)
             await msg.remove_reaction(reaction.emoji,user)
 
-def playerInfo(player):
+def player_info(player):
     import requests
     player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}?mode=competitive"
     url = f"https://ow-api.com/v1/stats/pc/us/{'-'.join(player.split('#'))}/complete"
@@ -184,13 +185,12 @@ def playerInfo(player):
             role_info["damage"][1].append(hero[0])
     return [player_url,avatar,sr,role_info]
 
-@bot.command(aliases=['od'])
-async def tespa(ctx, team : str):
+async def get_team_sr(channel, team : str):
     import requests
     from bs4 import BeautifulSoup
     from multiprocessing import Pool
     from helpers import rankEmoji, hero_dict
-    await ctx.send("Fetching team...")
+    await channel.send("Fetching team...")
     if "tespa" in team:
         s = BeautifulSoup(requests.get(team).content, 'html.parser')
         teamName = s.find('span', class_="hdg-em").text
@@ -198,7 +198,7 @@ async def tespa(ctx, team : str):
         embed = discord.Embed(title=teamName, url=team, description="Overwatch Collegiate Championship: Preseason", color=0xff8040)
         embed.set_thumbnail(url="https://pbs.twimg.com/profile_images/1148303026643488768/xcH5WwnX_400x400.png")
     else:
-        s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5d6fdb02c747ff732da36eb4/teams?name={}'.format(team)).json()
+        s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5df7969f11f28577f5dd5df7/teams?name={}'.format(team)).json()
         url = f"https://battlefy.com/teams/{s[0]['persistentTeamID']}"
         players = [p['inGameName'] for p in s[0]['players']]
         embed = discord.Embed(title=team, url=url, description="2019 Overwatch Open Division Practice Season - North America", color=0xff8040)
@@ -206,7 +206,7 @@ async def tespa(ctx, team : str):
     highest_avg = []
     average = []
     with Pool(12) as p:
-        p_info = p.map(playerInfo, players)
+        p_info = p.map(player_info, players)
     for i in range(len(p_info)):
         skill_rating, role_info = p_info[i][2:]
         player = players[i]
@@ -242,7 +242,79 @@ async def tespa(ctx, team : str):
     embed.add_field(name="Average", value = f"{a_e}{avg}", inline=False)
     embed.add_field(name="Highest Average", value = f"{h_e}{h_avg}", inline=False)
     embed.set_footer(text="N/A = Player profile private or not yet placed.")
-    await ctx.send(embed=embed)
+    await channel.send(embed=embed)
+
+@tasks.loop(seconds=60.0)
+async def get_matches():
+    import datetime
+    now = datetime.datetime.now()
+    ch = bot.get_channel(546094495448432643)
+    if(now.isoweekday()==4):
+        await get_team_sr(ch,"Cap'n Crunge")
+
+@bot.command()
+async def start_match_scheduler(ctx):
+    get_matches.start()
+    await ctx.send("Started match scheduler.")
+
+@bot.command()
+async def stop_match_scheduler(ctx):
+    get_matches.stop()
+    await ctx.send("Stopped match scheduler.")
+
+@bot.command()
+async def start_update_scheduler(ctx):
+    update_team.start()
+    await ctx.send("Started update scheduler.")
+
+@bot.command()
+async def stop_update_scheduler(ctx):
+    update_team.stop()
+    await ctx.send("Stopped update scheduler.")
+
+@tasks.loop(seconds=60.0)
+async def update_team():
+    team_channel = bot.get_channel(661330736913055754)
+    team_sr = team_helper("Cap'n Crunge")
+    avg = [p for p in team_sr if p]
+    a = sum(avg)//len(avg)
+    await team_channel.edit(name=f"Team SR: {a}")
+    print("loop")
+
+@update_team.after_loop
+async def after_update_team():
+    print("Update scheduler ended.")
+
+@get_matches.after_loop
+async def after_update_matches():
+    print("Match scheduler ended")
+
+def player_sr(player):
+    import requests
+    url = f"https://ow-api.com/v1/stats/pc/us/{'-'.join(player.split('#'))}/complete"
+    data = requests.get(url).json()
+    try: return data['rating']
+    except: return
+
+def team_helper(team : str):
+    import requests
+    from bs4 import BeautifulSoup
+    from multiprocessing import Pool
+    from helpers import rankEmoji, hero_dict
+    if "tespa" in team:
+        s = BeautifulSoup(requests.get(team).content, 'html.parser')
+        players = [t.next_element.next_element.next_element.text for t in s.find_all('td', class_='compete-player-name')]
+    else:
+        s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5d6fdb02c747ff732da36eb4/teams?name={}'.format(team)).json()
+        players = [p['inGameName'] for p in s[0]['players']]
+    with Pool(12) as p:
+        p_info = p.map(player_sr, players)
+    return p_info
+
+@bot.command(aliases=['od'])
+async def tespa(ctx, team : str):
+    ch = ctx.channel
+    await get_team_sr(ch,team)
 
 async def run_bot():
     import os

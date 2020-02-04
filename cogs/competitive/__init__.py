@@ -59,7 +59,8 @@ class Competitive(commands.Cog):
                 elif(role=="Tank"):
                     role_info["tank"][0] = int(role_sr)
         try:
-            sr = int(s.find("span",attrs={"class":"player-skill-rating"}).text)
+            avg = [role_info[role][0] for role in role_info.keys() if role_info[role][0] != 0]
+            sr = sum(avg)//len(avg)
         except: sr = 0
         avatar = s.find("img",attrs={"class":"image-player image-avatar"})['src']
         heroes = s.find_all("div",attrs={"class":"name"})

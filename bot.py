@@ -16,7 +16,7 @@ async def on_ready():
 
 #@bot.event
 #async def on_command_error(ctx, error):
-#    await ctx.send("Error. Go to https://jetpackcat.tech/#/Commands for a list of available commands.")
+#    await ctx.send("Error. Go to https://jetpackcat.tech/#/Commands for a list of available commands or contact @skrz.")
 
 def owl_schedule(week : int):
     import requests
@@ -210,7 +210,8 @@ def scrape(player):
             elif(role=="Tank"):
                 role_info["tank"][0] = int(role_sr)
     try:
-        sr = int(s.find("span",attrs={"class":"player-skill-rating"}).text)
+        avg = [role_info[role][0] for role in role_info.keys() if role_info[role][0] != 0]
+        sr = sum(avg)//len(avg)
     except: sr = 0
     avatar = s.find("img",attrs={"class":"image-player image-avatar"})['src']
     heroes = s.find_all("div",attrs={"class":"name"})
@@ -278,15 +279,16 @@ async def get_team_sr(channel, team : str):
             hero_emojis = ""
         embed.add_field(name = f"{player}: {e}{skill_rating}", value = f"{role_emoji} {role_rank_emoji}{role_rating} {hero_emojis}", inline = False)
     if average:
+        sorted_highest_avg = sorted(highest_avg)[::-1][:6]
         avg = sum(average)//len(average)
-        h_avg = sum(highest_avg)//len(highest_avg)
+        h_avg = sum(sorted_highest_avg)//len(sorted_highest_avg)
     else: 
         avg = 0
         h_avg = 0
     h_e = rankEmoji(h_avg)
     a_e = rankEmoji(avg)
     embed.add_field(name="Average", value = f"{a_e}{avg}", inline=False)
-    embed.add_field(name="Highest Average", value = f"{h_e}{h_avg}", inline=False)
+    embed.add_field(name="Top 6 Players Average", value = f"{h_e}{h_avg}", inline=False)
     embed.set_footer(text="N/A = Player profile private or not yet placed.")
     await channel.send(embed=embed)
 

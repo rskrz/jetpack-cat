@@ -42,6 +42,7 @@ hero_dict = {
         "roadhog" : "<:Roadhog:591708295589396480>",
         "sigma" : "<:Sigma:619259776144113664>",
         "soldier76" : "<:Soldier76:591708295719419922>",
+        "soldier: 76" : "<:Soldier76:591708295719419922>",
         "sombra" : "<:Sombra:591708295484538892>",
         "symmetra" : "<:Symmetra:591708295413235717>",
         "torbjörn" : "<:Torbjorn:591708295249526815>",
@@ -57,7 +58,7 @@ hero_dict = {
         "tank" : "<:Tank:619262646885154846>",
         "dps" : "<:Dps:619262646834692106>",
         "damage" : "<:Dps:619262646834692106>",
-        "support" : "<:Support:619262646708863007>"
+        "support" : "<:Support:619262646708863007>",
         }
 
 heroes_only = {

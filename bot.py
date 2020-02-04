@@ -14,9 +14,9 @@ async def on_ready():
     print(f'Ready {bot.user}')
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
 
-@bot.event
-async def on_command_error(ctx, error):
-    await ctx.send("Error. Go to https://jetpackcat.tech/#/Commands for a list of available commands.")
+#@bot.event
+#async def on_command_error(ctx, error):
+#    await ctx.send("Error. Go to https://jetpackcat.tech/#/Commands for a list of available commands.")
 
 def owl_schedule(week : int):
     import requests
@@ -185,18 +185,60 @@ def player_info(player):
             role_info["damage"][1].append(hero[0])
     return [player_url,avatar,sr,role_info]
 
+def scrape(player):
+    from bs4 import BeautifulSoup
+    import requests
+    player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}?mode=competitive"
+    headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
+    s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
+    td_list = s.find_all('td')
+    if(not td_list):
+        player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}"
+        s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
+        td_list = s.find_all('td')
+    if(not td_list):
+        return player_info(player)
+    role_info = {"tank": [0,[]], "damage": [0,[]], "support": [0,[]]}
+    for td in td_list:
+        if td.has_attr("data-value"):
+            role = td.previous_sibling.text
+            role_sr = td.text.replace(',','')
+            if(role=="Damage"):
+                role_info["damage"][0] = int(role_sr)
+            elif(role=="Support"):
+                role_info["support"][0] = int(role_sr)
+            elif(role=="Tank"):
+                role_info["tank"][0] = int(role_sr)
+    try:
+        sr = int(s.find("span",attrs={"class":"player-skill-rating"}).text)
+    except: sr = 0
+    avatar = s.find("img",attrs={"class":"image-player image-avatar"})['src']
+    heroes = s.find_all("div",attrs={"class":"name"})
+    for hero in heroes:
+        name = hero.a.text.lower()
+        if name[:3] in 'anabapbrilucmermoizen':
+            role_info["support"][1].append(name)
+        elif name[:3] in 'dVaorireiroasigwinwreczar':
+            role_info["tank"][1].append(name)
+        elif len(role_info["damage"][1])<3: 
+            role_info["damage"][1].append(name)
+    return [player_url,avatar,sr,role_info]
+
 async def get_team_sr(channel, team : str):
     import requests
     from bs4 import BeautifulSoup
     from multiprocessing import Pool
     from helpers import rankEmoji, hero_dict
     await channel.send("Fetching team...")
-    if "tespa" in team:
-        s = BeautifulSoup(requests.get(team).content, 'html.parser')
-        teamName = s.find('span', class_="hdg-em").text
-        players = [t.next_element.next_element.next_element.text for t in s.find_all('td', class_='compete-player-name')]
+    if "gamebattles" in team:
+        id = team.split("https://gamebattles.majorleaguegaming.com/pc/overwatch/team/")
+        teamMembers = requests.get("https://gb-api.majorleaguegaming.com/api/web/v1/team-members-extended/team/"+id[1]).json()['body']
+        teamScreen = requests.get("https://gb-api.majorleaguegaming.com/api/web/v1/team-screen/"+id[1]).json()['body']['teamWithEligibilityAndPremiumStatus']['team']
+        teamName = teamScreen['name']
+        teamLogo = teamScreen['avatarUrl']
+        players = [p['teamMember']['gamertag'].strip('.') for p in teamMembers]
         embed = discord.Embed(title=teamName, url=team, description="Overwatch Collegiate Championship: Preseason", color=0xff8040)
-        embed.set_thumbnail(url="https://pbs.twimg.com/profile_images/1148303026643488768/xcH5WwnX_400x400.png")
+        embed.set_thumbnail(url=teamLogo)
     else:
         s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5df7969f11f28577f5dd5df7/teams?name={}'.format(team)).json()
         url = f"https://battlefy.com/teams/{s[0]['persistentTeamID']}"
@@ -206,7 +248,7 @@ async def get_team_sr(channel, team : str):
     highest_avg = []
     average = []
     with Pool(12) as p:
-        p_info = p.map(player_info, players)
+        p_info = p.map(scrape, players)
     for i in range(len(p_info)):
         skill_rating, role_info = p_info[i][2:]
         player = players[i]
@@ -220,8 +262,12 @@ async def get_team_sr(channel, team : str):
             role_emoji = hero_dict[role.lower()]
             role_rank_emoji = rankEmoji(role_rating)
             hero_emojis = ""
-            for hero in heroes:
-                hero_emojis += hero_dict[hero]
+            if(heroes):
+                hero_emojis = ' '.join(hero_dict[h] for h in heroes)
+            else:
+                hero_emojis = "N/A"
+               #for hero in heroes:
+                    #hero_emojis += hero_dict[hero]
             highest_avg.append(role_rating)
         else:
             e = "N/A"

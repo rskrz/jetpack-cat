@@ -177,7 +177,7 @@ def player_info(player):
     conv = lambda v: sum([a*b for a,b in zip([1,60,3600], map(int,v[1].split(':')[::-1]))])
     play_time = sorted([[hero, topHeroes['timePlayed']] for hero, topHeroes in data['competitiveStats']['topHeroes'].items()], key=conv)[::-1]
     for hero in play_time:
-        if hero[0][:3] in 'anabapbrilucmermoizen':
+        if hero[0][:3] in 'anabapbrilúcmermoizen':
             role_info["support"][1].append(hero[0])
         elif hero[0][:3] in 'dVaorireiroasigwinwreczar':
             role_info["tank"][1].append(hero[0])

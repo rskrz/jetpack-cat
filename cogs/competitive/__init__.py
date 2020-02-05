@@ -66,7 +66,7 @@ class Competitive(commands.Cog):
         heroes = s.find_all("div",attrs={"class":"name"})
         for hero in heroes:
             name = hero.a.text.lower()
-            if name[:3] in 'anabapbrilucmermoizen':
+            if name[:3] in 'anabapbrilúcmermoizen':
                 role_info["support"][1].append(name)
             elif name[:3] in 'dVaorireiroasigwinwreczar':
                 role_info["tank"][1].append(name)

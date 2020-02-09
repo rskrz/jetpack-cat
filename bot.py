@@ -242,10 +242,12 @@ async def get_team_sr(channel, team : str):
         embed.set_thumbnail(url=teamLogo)
     else:
         s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5df7969f11f28577f5dd5df7/teams?name={}'.format(team)).json()
-        url = f"https://battlefy.com/teams/{s[0]['persistentTeamID']}"
+        teamUrl = f"https://battlefy.com/teams/{s[0]['persistentTeamID']}"
+        logoUrl = s[0]['persistentTeam']['logoUrl']
+        name = s[0]['name']
         players = [p['inGameName'] for p in s[0]['players']]
-        embed = discord.Embed(title=team, url=url, description="2019 Overwatch Open Division Practice Season - North America", color=0xff8040)
-        embed.set_thumbnail(url="https://liquipedia.net/commons/images/thumb/3/30/Open_Division_2018_logo.png/540px-Open_Division_2018_logo.png")
+        embed = discord.Embed(title=name, url=teamUrl, description="2020 Overwatch Open Division Practice Season - North America", color=0xff8040)
+        embed.set_thumbnail(url=logoUrl)
     highest_avg = []
     average = []
     with Pool(12) as p:
@@ -267,8 +269,6 @@ async def get_team_sr(channel, team : str):
                 hero_emojis = ' '.join(hero_dict[h] for h in heroes)
             else:
                 hero_emojis = "N/A"
-               #for hero in heroes:
-                    #hero_emojis += hero_dict[hero]
             highest_avg.append(role_rating)
         else:
             e = "N/A"
@@ -322,12 +322,12 @@ async def stop_update_scheduler(ctx):
 
 @tasks.loop(seconds=60.0)
 async def update_team():
-    team_channel = bot.get_channel(661330736913055754)
-    team_sr = team_helper("Cap'n Crunge")
-    avg = [p for p in team_sr if p]
-    a = sum(avg)//len(avg)
-    await team_channel.edit(name=f"Team SR: {a}")
-    print("loop")
+    gold_channel = bot.get_channel(661330736913055754)
+    gold_info = team_helper("34049268")
+    avg_list = [rank[2] for rank in gold_info if rank[2]]
+    avg = sum(avg_list)//len(avg_list)
+    await gold_channel.edit(name=f"Team SR: {avg}")
+    #print("loop")
 
 @update_team.after_loop
 async def after_update_team():
@@ -337,26 +337,13 @@ async def after_update_team():
 async def after_update_matches():
     print("Match scheduler ended")
 
-def player_sr(player):
+def team_helper(id : str):
     import requests
-    url = f"https://ow-api.com/v1/stats/pc/us/{'-'.join(player.split('#'))}/complete"
-    data = requests.get(url).json()
-    try: return data['rating']
-    except: return
-
-def team_helper(team : str):
-    import requests
-    from bs4 import BeautifulSoup
     from multiprocessing import Pool
-    from helpers import rankEmoji, hero_dict
-    if "tespa" in team:
-        s = BeautifulSoup(requests.get(team).content, 'html.parser')
-        players = [t.next_element.next_element.next_element.text for t in s.find_all('td', class_='compete-player-name')]
-    else:
-        s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5d6fdb02c747ff732da36eb4/teams?name={}'.format(team)).json()
-        players = [p['inGameName'] for p in s[0]['players']]
+    team_members = requests.get("https://gb-api.majorleaguegaming.com/api/web/v1/team-members-extended/team/"+id).json()['body']
+    players = [p['teamMember']['gamertag'].strip('.') for p in team_members]
     with Pool(12) as p:
-        p_info = p.map(player_sr, players)
+        p_info = p.map(scrape, players)
     return p_info
 
 @bot.command(aliases=['od'])

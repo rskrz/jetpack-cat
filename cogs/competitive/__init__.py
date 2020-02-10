@@ -68,7 +68,7 @@ class Competitive(commands.Cog):
             name = hero.a.text.lower()
             if name[:3] in 'anabapbrilúcmermoizen':
                 role_info["support"][1].append(name)
-            elif name[:3] in 'dVaorireiroasigwinwreczar':
+            elif name[:3] in 'd.vaorireiroasigwinwreczar':
                 role_info["tank"][1].append(name)
             elif len(role_info["damage"][1])<3: 
                 role_info["damage"][1].append(name)

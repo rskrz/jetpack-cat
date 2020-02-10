@@ -179,7 +179,7 @@ def player_info(player):
     for hero in play_time:
         if hero[0][:3] in 'anabapbrilúcmermoizen':
             role_info["support"][1].append(hero[0])
-        elif hero[0][:3] in 'dVaorireiroasigwinwreczar':
+        elif hero[0][:3] in 'd.vaorireiroasigwinwreczar':
             role_info["tank"][1].append(hero[0])
         elif len(role_info["damage"][1])<3: 
             role_info["damage"][1].append(hero[0])

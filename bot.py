@@ -3,11 +3,12 @@ from discord.ext import commands
 from discord.ext import tasks
 
 bot = commands.Bot(command_prefix='.')
-bot.remove_command('help')
+#bot.remove_command('help')
 
-@bot.command()
-async def help(ctx):
-    await ctx.send("Go to https://jetpackcat.tech/#/Commands for a list of available commands.")
+#@bot.command()
+#async def help(ctx):
+#    await ctx.send("Please message <@73578715598032896> for assistance.")
+#    await ctx.send("Go to https://jetpackcat.tech/#/Commands for a list of available commands.")
 
 @bot.event
 async def on_ready():
@@ -16,7 +17,14 @@ async def on_ready():
 
 #@bot.event
 #async def on_command_error(ctx, error):
-#    await ctx.send("Error. Go to https://jetpackcat.tech/#/Commands for a list of available commands or contact @skrz.")
+#    a = error.
+#    print(type(error))
+#    print(str(error))
+#    if "not found" in str(error):
+#        return
+#   await ctx.send(error)
+#    await ctx.send("Error. Please message <@73578715598032896> for assistance.")
+#    #await ctx.send("Error. Go to https://jetpackcat.tech/#/Commands for a list of available commands or contact @skrz.")
 
 def owl_schedule(week : int):
     import requests
@@ -238,7 +246,7 @@ async def get_team_sr(channel, team : str):
         teamName = teamScreen['name']
         teamLogo = teamScreen['avatarUrl']
         players = [p['teamMember']['gamertag'].strip('.') for p in teamMembers]
-        embed = discord.Embed(title=teamName, url=team, description="Overwatch Collegiate Championship: Preseason", color=0xff8040)
+        embed = discord.Embed(title=teamName, url=team, description="Overwatch Collegiate Championship", color=0xff8040)
         embed.set_thumbnail(url=teamLogo)
     else:
         s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5df7969f11f28577f5dd5df7/teams?name={}'.format(team)).json()
@@ -246,7 +254,7 @@ async def get_team_sr(channel, team : str):
         logoUrl = s[0]['persistentTeam']['logoUrl']
         name = s[0]['name']
         players = [p['inGameName'] for p in s[0]['players']]
-        embed = discord.Embed(title=name, url=teamUrl, description="2020 Overwatch Open Division Practice Season - North America", color=0xff8040)
+        embed = discord.Embed(title=name, url=teamUrl, description="2020 Overwatch Open Division Season 1 - North America", color=0xff8040)
         embed.set_thumbnail(url=logoUrl)
     highest_avg = []
     average = []
@@ -300,33 +308,40 @@ async def get_matches():
     if(now.isoweekday()==4):
         await get_team_sr(ch,"Cap'n Crunge")
 
-@bot.command()
+@bot.command(hidden=True)
 async def start_match_scheduler(ctx):
     get_matches.start()
     await ctx.send("Started match scheduler.")
 
-@bot.command()
+@bot.command(hidden=True)
 async def stop_match_scheduler(ctx):
     get_matches.stop()
     await ctx.send("Stopped match scheduler.")
 
-@bot.command()
+@bot.command(hidden=True)
 async def start_update_scheduler(ctx):
     update_team.start()
     await ctx.send("Started update scheduler.")
 
-@bot.command()
+@bot.command(hidden=True)
 async def stop_update_scheduler(ctx):
     update_team.stop()
     await ctx.send("Stopped update scheduler.")
 
-@tasks.loop(seconds=60.0)
+@tasks.loop(hours=3.0)
 async def update_team():
     gold_channel = bot.get_channel(661330736913055754)
+    black_channel = bot.get_channel(676941215106596864)
     gold_info = team_helper("34049268")
-    avg_list = [rank[2] for rank in gold_info if rank[2]]
-    avg = sum(avg_list)//len(avg_list)
-    await gold_channel.edit(name=f"Team SR: {avg}")
+    black_info = team_helper("34064172")
+    h_avg_list_gold = [highest for player in gold_info if (highest:=max(list(player[3].values()))[0]) != 0]
+    sort_gold = sorted(h_avg_list_gold)[::-1][:6]
+    h_gold = sum(sort_gold)//len(sort_gold)
+    h_avg_list_black = [highest for player in black_info if (highest:=max(list(player[3].values()))[0]) != 0]
+    sort_black = sorted(h_avg_list_black)[::-1][:6]
+    h_black = sum(sort_black)//len(sort_black)
+    await gold_channel.edit(name=f"💛 Gold Team SR: {h_gold}")
+    await black_channel.edit(name=f"🖤 Black Team SR: {h_black}")
     #print("loop")
 
 @update_team.after_loop
@@ -346,7 +361,7 @@ def team_helper(id : str):
         p_info = p.map(scrape, players)
     return p_info
 
-@bot.command(aliases=['od'])
+@bot.command(aliases=['od'], cog="Competitive")
 async def tespa(ctx, team : str):
     ch = ctx.channel
     await get_team_sr(ch,team)

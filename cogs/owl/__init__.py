@@ -67,21 +67,16 @@ class Owl(commands.Cog):
 
     async def player_stats(self, name):
         import requests
-        url = 'https://api.overwatchleague.com/stats/players?stage_id=regular_season&season=2019'
+        url = 'https://api.overwatchleague.com/stats/players'
         data = requests.get(url).json()
         for player in data['data']:
             if player['name'].lower() == name.lower():
-                player_url = "https://api.overwatchleague.com/players/"+str(player['playerId'])+"?locale=en-us&season=2019&stage_id=regular_season&expand=stats,stat.ranks"
+                player_url = f"https://api.overwatchleague.com/players/{player['playerId']}"
                 playerData = requests.get(player_url).json()
-                #playerInfo = []
                 picture = playerData['data']['player']['headshot']
-                playerHeroes = []
-                for hero in playerData['data']['stats']['heroes']:
-                    heroArray = [hero['name'],hero['stats']['time_played_total']]
-                    playerHeroes.append(heroArray)
-                    playerHeroes.sort(key = self.sortSecond, reverse = True)
-                heroes = playerHeroes[:3]
-                return(player,picture,heroes)
+                playerHeroes = [p for p in playerData['data']['player']['attributes']['heroes']]
+                print(player,picture,playerHeroes[:3])
+                return(player,picture,playerHeroes[:3])
 
     @commands.command(description='get player stats', aliases=['player'])
     async def stats(self, ctx, name : str):
@@ -92,17 +87,19 @@ class Owl(commands.Cog):
         playerTeam = next(value for key, value in teams.items() if playerStats['team'] in key)
         desc = f"{str(playerStats['role']).capitalize()} player for {playerTeam[3]}"
         emojis = ""
+        print(playerHeroes)
         for hero in playerHeroes:
-            emojis += hero_dict[hero[0]]
-        embed = discord.Embed(title=str(playerStats['name']), url = "https://overwatchleague.com/en-us/players/"+str(playerStats['playerId']), description=desc, color=playerTeam[1])
+            print(hero)
+            emojis += hero_dict[hero]
+        embed = discord.Embed(title=str(playerStats['name']), url = f"https://overwatchleague.com/en-us/players/{playerStats['playerId']}", description=desc, color=playerTeam[1])
         embed.set_thumbnail(url=playerPicture)
-        embed.add_field(name="ELIM", value=str(round(playerStats['eliminations_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="DEATHS", value=str(round(playerStats['deaths_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="K/D", value=str(round(playerStats['eliminations_avg_per_10m']/playerStats['deaths_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="DAMAGE", value=str(round(playerStats['hero_damage_avg_per_10m'])), inline=True)
-        embed.add_field(name="HEALING", value=str(round(playerStats['healing_avg_per_10m'])), inline=True)
-        embed.add_field(name="ULTIMATES", value=str(round(playerStats['ultimates_earned_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="FINAL BLOWS", value=str(round(playerStats['final_blows_avg_per_10m'],2)), inline=True)
+        embed.add_field(name="ELIM", value=f"{round(playerStats['eliminations_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="DEATHS", value=f"{round(playerStats['deaths_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="K/D", value=f"{round(playerStats['eliminations_avg_per_10m']/playerStats['deaths_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="DAMAGE", value=f"{round(playerStats['hero_damage_avg_per_10m'])}", inline=True)
+        embed.add_field(name="HEALING", value=f"{round(playerStats['healing_avg_per_10m'])}", inline=True)
+        embed.add_field(name="ULTIMATES", value=f"{round(playerStats['ultimates_earned_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="FINAL BLOWS", value=f"{round(playerStats['final_blows_avg_per_10m'],2)}", inline=True)
         embed.add_field(name="TIME PLAYED", value=time_played, inline=True)
         embed.add_field(name="HEROES",value=emojis,inline=True)
         embed.set_footer(text="All stats are avg. per 10 minutes unless otherwise noted.")
@@ -126,20 +123,20 @@ class Owl(commands.Cog):
         embed.set_thumbnail(url="https://www.plusforward.net/files/2016/15919/1_ow-league.png")
         embed.add_field(name=playerStats['name'],value=desc,inline=True)
         embed.add_field(name=playerStats2['name'],value=desc2,inline=True)
-        embed.add_field(name="ELIM", value=str(round(playerStats['eliminations_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="ELIM", value=str(round(playerStats2['eliminations_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="DEATHS", value=str(round(playerStats['deaths_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="DEATHS", value=str(round(playerStats2['deaths_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="K/D", value=str(round(playerStats['eliminations_avg_per_10m']/playerStats['deaths_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="K/D", value=str(round(playerStats2['eliminations_avg_per_10m']/playerStats2['deaths_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="DAMAGE", value=str(round(playerStats['hero_damage_avg_per_10m'])), inline=True)
-        embed.add_field(name="DAMAGE", value=str(round(playerStats2['hero_damage_avg_per_10m'])), inline=True)
-        embed.add_field(name="HEALING", value=str(round(playerStats['healing_avg_per_10m'])), inline=True)
-        embed.add_field(name="HEALING", value=str(round(playerStats2['healing_avg_per_10m'])), inline=True)
-        embed.add_field(name="ULTIMATES", value=str(round(playerStats['ultimates_earned_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="ULTIMATES", value=str(round(playerStats2['ultimates_earned_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="FINAL BLOWS", value=str(round(playerStats['final_blows_avg_per_10m'],2)), inline=True)
-        embed.add_field(name="FINAL BLOWS", value=str(round(playerStats2['final_blows_avg_per_10m'],2)), inline=True)
+        embed.add_field(name="ELIM", value=f"{round(playerStats['eliminations_avg_per_10m'],2)}", inline=False)
+        embed.add_field(name="ELIM", value=f"{round(playerStats2['eliminations_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="DEATHS", value=f"{round(playerStats['deaths_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="DEATHS", value=f"{round(playerStats2['deaths_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="K/D", value=f"{round(playerStats['eliminations_avg_per_10m']/playerStats['deaths_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="K/D", value=f"{round(playerStats2['eliminations_avg_per_10m']/playerStats2['deaths_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="DAMAGE", value=f"{round(playerStats['hero_damage_avg_per_10m'])}", inline=True)
+        embed.add_field(name="DAMAGE", value=f"{round(playerStats2['hero_damage_avg_per_10m'])}", inline=True)
+        embed.add_field(name="HEALING", value=f"{round(playerStats['healing_avg_per_10m'])}", inline=True)
+        embed.add_field(name="HEALING", value=f"{round(playerStats2['healing_avg_per_10m'])}", inline=True)
+        embed.add_field(name="ULTIMATES", value=f"{round(playerStats['ultimates_earned_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="ULTIMATES", value=f"{round(playerStats2['ultimates_earned_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="FINAL BLOWS", value=f"{round(playerStats['final_blows_avg_per_10m'],2)}", inline=True)
+        embed.add_field(name="FINAL BLOWS", value=f"{round(playerStats2['final_blows_avg_per_10m'],2)}", inline=True)
         embed.add_field(name="TIME PLAYED", value=time_played, inline=True)
         embed.add_field(name="TIME PLAYED", value=time_played2, inline=True)
         embed.set_footer(text="All stats are avg. per 10 minutes unless otherwise noted.")

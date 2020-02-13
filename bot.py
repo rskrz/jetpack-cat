@@ -342,7 +342,7 @@ async def update_team():
     h_black = sum(sort_black)//len(sort_black)
     await gold_channel.edit(name=f"💛 Gold Team SR: {h_gold}")
     await black_channel.edit(name=f"🖤 Black Team SR: {h_black}")
-    #print("loop")
+    print("loop")
 
 @update_team.after_loop
 async def after_update_team():

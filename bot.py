@@ -7,7 +7,11 @@ bot = commands.Bot(command_prefix='.')
 @bot.event
 async def on_ready():
     print(f'Ready {bot.user}')
+    print("    |\__/,|   (`\\")
+    print("  _.|o o  |_   ) )")
+    print("-(((---(((--------")
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
+    await update_team.start()
 
 def owl_schedule(week : int):
     import requests
@@ -300,16 +304,6 @@ async def stop_match_scheduler(ctx):
     get_matches.stop()
     await ctx.send("Stopped match scheduler.")
 
-@bot.command(hidden=True)
-async def start_update_scheduler(ctx):
-    update_team.start()
-    await ctx.send("Started update scheduler.")
-
-@bot.command(hidden=True)
-async def stop_update_scheduler(ctx):
-    update_team.stop()
-    await ctx.send("Stopped update scheduler.")
-
 @tasks.loop(hours=3.0)
 async def update_team():
     gold_channel = bot.get_channel(661330736913055754)
@@ -326,13 +320,29 @@ async def update_team():
     await black_channel.edit(name=f"🖤 Black Team SR: {h_black}")
     print("loop")
 
+@bot.command(hidden=True)
+async def start_update_scheduler(ctx):
+    update_team.start()
+    await ctx.send("Starting update scheduler...")
+
+@bot.command(hidden=True)
+async def stop_update_scheduler(ctx):
+    update_team.cancel()
+    await ctx.send("Stopping update scheduler...")
+
+@update_team.before_loop
+async def before_update_team():
+    print("Update scheduler started.")
+
 @update_team.after_loop
 async def after_update_team():
     print("Update scheduler ended.")
 
+
 @get_matches.after_loop
 async def after_update_matches():
     print("Match scheduler ended")
+    await bot.wait_until_ready()
 
 def team_helper(id : str):
     import requests

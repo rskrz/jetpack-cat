@@ -20,11 +20,13 @@ class Competitive(commands.Cog):
             role_info = {role['role']: (role['level'],[]) for role in data['ratings']}
             roles = ['tank','damage','support']
             for r in roles:
-                if r not in role_info.keys(): role_info[r] = (0,[])
+                if r not in role_info.keys(): 
+                    role_info[r] = (0,[])
         except: 
             return [player_url,avatar,sr,role_info]
         conv = lambda v: sum([a*b for a,b in zip([1,60,3600], map(int,v[1].split(':')[::-1]))])
-        play_time = sorted([[hero, topHeroes['timePlayed']] for hero, topHeroes in data['competitiveStats']['topHeroes'].items()], key=conv)[::-1]
+        topHeroes = data['competitiveStats']['topHeroes'].items()
+        play_time = sorted([[hero, topHero['timePlayed']] for hero, topHero in topHeroes], key=conv)[::-1]
         for hero in play_time:
             if hero[0][:3] in 'anabapbrilucmermoizen':
                 role_info["support"][1].append(hero[0])
@@ -40,13 +42,11 @@ class Competitive(commands.Cog):
         player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}?mode=competitive"
         headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
         s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
-        td_list = s.find_all('td')
-        if(not td_list):
+        if not (td_list := s.find_all('td')):
             player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}"
             s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
-            td_list = s.find_all('td')
-        if(not td_list):
-            return await self.player_info(player)
+            if not (td_list := s.find_all('td')):
+                return await self.player_info(player)
         role_info = {"tank": [0,[]], "damage": [0,[]], "support": [0,[]]}
         for td in td_list:
             if td.has_attr("data-value"):
@@ -61,7 +61,8 @@ class Competitive(commands.Cog):
         try:
             avg = [role_info[role][0] for role in role_info.keys() if role_info[role][0] != 0]
             sr = sum(avg)//len(avg)
-        except: sr = 0
+        except: 
+            sr = 0
         avatar = s.find("img",attrs={"class":"image-player image-avatar"})['src']
         heroes = s.find_all("div",attrs={"class":"name"})
         for hero in heroes:
@@ -84,15 +85,14 @@ class Competitive(commands.Cog):
         embed = discord.Embed(title=player, url=player_url, description=f"{emoji}{skill_rating}", inline=False, color=0xff8900)
         embed.set_thumbnail(url=avatar)
         for role in role_info:
-            sr = role_info[role][0]
-            if(not sr): continue
-            e = rankEmoji(sr)
-            heroes = role_info[role][1][:3]
-            if(heroes):
+            if not (sr := role_info[role][0]): 
+                continue
+            if heroes := role_info[role][1][:3]:
                 hero_emojis = ' '.join(hero_dict[h] for h in heroes)
             else:
                 hero_emojis = "N/A"
             role_emoji = hero_dict[role.lower()]
+            e = rankEmoji(sr)
             embed.add_field(name=f"{role_emoji} {e}{sr}", value= hero_emojis, inline=False)
         await ctx.send(embed=embed)
 

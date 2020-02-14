@@ -3,28 +3,11 @@ from discord.ext import commands
 from discord.ext import tasks
 
 bot = commands.Bot(command_prefix='.')
-#bot.remove_command('help')
-
-#@bot.command()
-#async def help(ctx):
-#    await ctx.send("Please message <@73578715598032896> for assistance.")
-#    await ctx.send("Go to https://jetpackcat.tech/#/Commands for a list of available commands.")
 
 @bot.event
 async def on_ready():
     print(f'Ready {bot.user}')
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
-
-#@bot.event
-#async def on_command_error(ctx, error):
-#    a = error.
-#    print(type(error))
-#    print(str(error))
-#    if "not found" in str(error):
-#        return
-#   await ctx.send(error)
-#    await ctx.send("Error. Please message <@73578715598032896> for assistance.")
-#    #await ctx.send("Error. Go to https://jetpackcat.tech/#/Commands for a list of available commands or contact @skrz.")
 
 def owl_schedule(week : int):
     import requests
@@ -183,7 +166,8 @@ def player_info(player):
     except: 
         return [player_url,avatar,sr,role_info]
     conv = lambda v: sum([a*b for a,b in zip([1,60,3600], map(int,v[1].split(':')[::-1]))])
-    play_time = sorted([[hero, topHeroes['timePlayed']] for hero, topHeroes in data['competitiveStats']['topHeroes'].items()], key=conv)[::-1]
+    topHeroes = data['competitiveStats']['topHeroes'].items()
+    play_time = sorted([[hero, topHero['timePlayed']] for hero, topHero in topHeroes], key=conv)[::-1]
     for hero in play_time:
         if hero[0][:3] in 'anabapbrilúcmermoizen':
             role_info["support"][1].append(hero[0])
@@ -199,13 +183,11 @@ def scrape(player):
     player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}?mode=competitive"
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
     s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
-    td_list = s.find_all('td')
-    if(not td_list):
+    if not (td_list:= s.find_all('td')):
         player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}"
         s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
-        td_list = s.find_all('td')
-    if(not td_list):
-        return player_info(player)
+        if not (td_list:= s.find_all('td')):
+            return player_info(player)
     role_info = {"tank": [0,[]], "damage": [0,[]], "support": [0,[]]}
     for td in td_list:
         if td.has_attr("data-value"):
@@ -273,7 +255,7 @@ async def get_team_sr(channel, team : str):
             role_emoji = hero_dict[role.lower()]
             role_rank_emoji = rankEmoji(role_rating)
             hero_emojis = ""
-            if(heroes):
+            if heroes:
                 hero_emojis = ' '.join(hero_dict[h] for h in heroes)
             else:
                 hero_emojis = "N/A"
@@ -305,7 +287,7 @@ async def get_matches():
     import datetime
     now = datetime.datetime.now()
     ch = bot.get_channel(546094495448432643)
-    if(now.isoweekday()==4):
+    if now.isoweekday() == 4:
         await get_team_sr(ch,"Cap'n Crunge")
 
 @bot.command(hidden=True)

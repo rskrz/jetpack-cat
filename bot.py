@@ -304,7 +304,7 @@ async def stop_match_scheduler(ctx):
     get_matches.stop()
     await ctx.send("Stopped match scheduler.")
 
-@tasks.loop(hours=3.0)
+@tasks.loop(hours=1.0)
 async def update_team():
     gold_channel = bot.get_channel(661330736913055754)
     black_channel = bot.get_channel(676941215106596864)

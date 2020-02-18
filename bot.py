@@ -7,9 +7,9 @@ bot = commands.Bot(command_prefix='.')
 @bot.event
 async def on_ready():
     print(f'Ready {bot.user}')
-    print("    |\__/,|   (`\\")
-    print("  _.|o o  |_   ) )")
-    print("-(((---(((--------")
+    print("|    |\__/,|   (`\\")
+    print("|  _.|o o  |_   ) )")
+    print("|-(((---(((--------")
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
     await update_team.start()
 

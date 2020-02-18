@@ -36,6 +36,27 @@ class Competitive(commands.Cog):
                 role_info["damage"][1].append(hero[0])
         return [player_url,avatar,sr,role_info]
 
+    @commands.command()
+    async def rank(self, ctx, player):
+        from bs4 import BeautifulSoup
+        import requests
+        player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}?mode=competitive"
+        headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
+        s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
+        heroes = s.find("div", attrs={"class":"player-heroes"})
+        skill_rating = s.find("span", attrs="player-skill-rating").text
+        emoji = rankEmoji(int(skill_rating))
+        embed = discord.Embed(title=player, url=player_url, description=f"{emoji}{skill_rating}", inline=False, color=0xff8900)
+        count = 0
+        for hero in heroes:
+            if count < 5:
+                name = hero.find("a", attrs={"class":"color-white"}).text
+                rank = hero.find("span", attrs={"rel":"tooltip"}).text
+                e = hero_dict[name.lower()]
+                embed.add_field(name=e,value=rank, inline=False)
+                count += 1
+        await ctx.send(embed=embed)
+
     async def scrape(self, player):
         from bs4 import BeautifulSoup
         import requests

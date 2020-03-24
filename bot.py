@@ -11,7 +11,8 @@ async def on_ready():
     print("|  _.|o o  |_   ) )")
     print("|-(((---(((--------")
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
-    await update_team.start()
+    #await update_team.start()
+    #await get_matches.start()
 
 def owl_schedule(week : int):
     import requests
@@ -181,43 +182,10 @@ def player_info(player):
             role_info["damage"][1].append(hero[0])
     return [player_url,avatar,sr,role_info]
 
-def scrape(player):
-    from bs4 import BeautifulSoup
-    import requests
-    player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}?mode=competitive"
-    headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
-    s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
-    if not (td_list:= s.find_all('td')):
-        player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}"
-        s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
-        if not (td_list:= s.find_all('td')):
-            return player_info(player)
-    role_info = {"tank": [0,[]], "damage": [0,[]], "support": [0,[]]}
-    for td in td_list:
-        if td.has_attr("data-value"):
-            role = td.previous_sibling.text
-            role_sr = td.text.replace(',','')
-            if(role=="Damage"):
-                role_info["damage"][0] = int(role_sr)
-            elif(role=="Support"):
-                role_info["support"][0] = int(role_sr)
-            elif(role=="Tank"):
-                role_info["tank"][0] = int(role_sr)
-    try:
-        avg = [role_info[role][0] for role in role_info.keys() if role_info[role][0] != 0]
-        sr = sum(avg)//len(avg)
-    except: sr = 0
-    avatar = s.find("img",attrs={"class":"image-player image-avatar"})['src']
-    heroes = s.find_all("div",attrs={"class":"name"})
-    for hero in heroes:
-        name = hero.a.text.lower()
-        if name[:3] in 'anabapbrilucmermoizen':
-            role_info["support"][1].append(name)
-        elif name[:3] in 'dVaorireiroasigwinwreczar':
-            role_info["tank"][1].append(name)
-        elif len(role_info["damage"][1])<3: 
-            role_info["damage"][1].append(name)
-    return [player_url,avatar,sr,role_info]
+@bot.command(aliases=['od'], cog="Competitive")
+async def tespa(ctx, team : str):
+    ch = ctx.channel
+    await get_team_sr(ch,team)
 
 async def get_team_sr(channel, team : str):
     import requests
@@ -235,12 +203,12 @@ async def get_team_sr(channel, team : str):
         embed = discord.Embed(title=teamName, url=team, description="Overwatch Collegiate Championship", color=0xff8040)
         embed.set_thumbnail(url=teamLogo)
     else:
-        s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5df7969f11f28577f5dd5df7/teams?name={}'.format(team)).json()
+        s = requests.get('https://dtmwra1jsgyb0.cloudfront.net/tournaments/5e3add5f23c6cf1049f2746b/teams?name={}'.format(team)).json()
         teamUrl = f"https://battlefy.com/teams/{s[0]['persistentTeamID']}"
         logoUrl = s[0]['persistentTeam']['logoUrl']
         name = s[0]['name']
         players = [p['inGameName'] for p in s[0]['players']]
-        embed = discord.Embed(title=name, url=teamUrl, description="2020 Overwatch Open Division Season 1 - North America", color=0xff8040)
+        embed = discord.Embed(title=name, url=teamUrl, description="2020 Overwatch Open Division Season 2 - North America", color=0xff8040)
         embed.set_thumbnail(url=logoUrl)
     highest_avg = []
     average = []
@@ -286,23 +254,85 @@ async def get_team_sr(channel, team : str):
     embed.set_footer(text="N/A = Player profile private or not yet placed.")
     await channel.send(embed=embed)
 
-@tasks.loop(seconds=60.0)
+def scrape(player):
+    from bs4 import BeautifulSoup
+    import requests
+    player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}?mode=competitive"
+    headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
+    s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
+    if not (td_list:= s.find_all('td')):
+        player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}"
+        s = BeautifulSoup(requests.get(player_url, headers=headers).content, 'html.parser')
+        if not (td_list:= s.find_all('td')):
+            return player_info(player)
+    role_info = {"tank": [0,[]], "damage": [0,[]], "support": [0,[]]}
+    for td in td_list:
+        if td.has_attr("data-value"):
+            role = td.previous_sibling.text
+            role_sr = td.text.replace(',','')
+            if(role=="Damage"):
+                role_info["damage"][0] = int(role_sr)
+            elif(role=="Support"):
+                role_info["support"][0] = int(role_sr)
+            elif(role=="Tank"):
+                role_info["tank"][0] = int(role_sr)
+    try:
+        avg = [role_info[role][0] for role in role_info.keys() if role_info[role][0] != 0]
+        sr = sum(avg)//len(avg)
+    except: sr = 0
+    avatar = s.find("img",attrs={"class":"image-player image-avatar"})['src']
+    heroes = s.find_all("div",attrs={"class":"name"})
+    for hero in heroes:
+        name = hero.a.text.lower()
+        if name[:3] in 'anabapbrilucmermoizen':
+            role_info["support"][1].append(name)
+        elif name[:3] in 'dVaorireiroasigwinwreczar':
+            role_info["tank"][1].append(name)
+        elif len(role_info["damage"][1])<3: 
+            role_info["damage"][1].append(name)
+    return [player_url,avatar,sr,role_info]
+
+@tasks.loop(hours=24.0)
 async def get_matches():
     import datetime
     now = datetime.datetime.now()
-    ch = bot.get_channel(546094495448432643)
-    if now.isoweekday() == 4:
-        await get_team_sr(ch,"Cap'n Crunge")
+    ch = bot.get_channel(660638084018471002)
+    gold = "https://gb-api.majorleaguegaming.com/api/web/v1/team-matches-screen/team/34049268?pageSize=5&pageNumber=1"
+    black = "https://gb-api.majorleaguegaming.com/api/web/v1/team-matches-screen/team/34064172?pageSize=5&pageNumber=1"
+    if now.weekday() == 2:
+        gold_opp = find_team(gold,"Oddly Omnic Gold")
+        await get_team_sr(ch,gold_opp)
+        await ch.send("<@&659564842868539412>")
+        black_opp = find_team(black,"Oddly Omnic Black")
+        await get_team_sr(ch,black_opp)
+        await ch.send("<@&659564887156195397>")
+    print("Match Scheduler Loop")
+
+def find_team(url, team_name):
+    import requests
+    data = requests.get(url).json()
+    record = data["body"]["records"][0]
+    homeTeam = record["homeTeamCard"]
+    team_id = homeTeam["id"] if homeTeam["name"] != team_name else record["visitorTeamCard"]["id"]
+    return f"https://gamebattles.majorleaguegaming.com/pc/overwatch/team/{team_id}"
 
 @bot.command(hidden=True)
 async def start_match_scheduler(ctx):
     get_matches.start()
-    await ctx.send("Started match scheduler.")
+    await ctx.send("Starting match scheduler...")
 
 @bot.command(hidden=True)
 async def stop_match_scheduler(ctx):
     get_matches.stop()
-    await ctx.send("Stopped match scheduler.")
+    await ctx.send("Stopping match scheduler...")
+
+@get_matches.before_loop
+async def before_get_matches():
+    print("Match scheduler started.")
+
+@get_matches.after_loop
+async def after_get_matches():
+    print("Match scheduler ended.")
 
 @tasks.loop(hours=1.0)
 async def update_team():
@@ -318,7 +348,7 @@ async def update_team():
     h_black = sum(sort_black)//len(sort_black)
     await gold_channel.edit(name=f"💛 Gold Team SR: {h_gold}")
     await black_channel.edit(name=f"🖤 Black Team SR: {h_black}")
-    print("loop")
+    print("Update Scheduler Loop")
 
 @bot.command(hidden=True)
 async def start_update_scheduler(ctx):
@@ -338,12 +368,6 @@ async def before_update_team():
 async def after_update_team():
     print("Update scheduler ended.")
 
-
-@get_matches.after_loop
-async def after_update_matches():
-    print("Match scheduler ended")
-    await bot.wait_until_ready()
-
 def team_helper(id : str):
     import requests
     from multiprocessing import Pool
@@ -352,11 +376,6 @@ def team_helper(id : str):
     with Pool(12) as p:
         p_info = p.map(scrape, players)
     return p_info
-
-@bot.command(aliases=['od'], cog="Competitive")
-async def tespa(ctx, team : str):
-    ch = ctx.channel
-    await get_team_sr(ch,team)
 
 async def run_bot():
     import os

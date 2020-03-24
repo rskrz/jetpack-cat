@@ -115,6 +115,7 @@ class Competitive(commands.Cog):
             role_emoji = hero_dict[role.lower()]
             e = rankEmoji(sr)
             embed.add_field(name=f"{role_emoji} {e}{sr}", value= hero_emojis, inline=False)
+        embed.set_footer(text="If SR=0, player profile may be private or unplaced.")
         await ctx.send(embed=embed)
 
 def setup(bot):

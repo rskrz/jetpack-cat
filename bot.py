@@ -11,8 +11,8 @@ async def on_ready():
     print("|  _.|o o  |_   ) )")
     print("|-(((---(((--------")
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
-    #await update_team.start()
-    #await get_matches.start()
+    await update_team.start()
+    await get_matches.start()
 
 def owl_schedule(week : int):
     import requests

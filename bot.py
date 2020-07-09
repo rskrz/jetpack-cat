@@ -155,6 +155,8 @@ async def standings(ctx):
 
 def player_info(player):
     import requests
+    if "?" in player:
+      return ["null","null",0,None]
     player_url = f"https://www.overbuff.com/players/pc/{'-'.join(player.split('#'))}?mode=competitive"
     url = f"https://ow-api.com/v1/stats/pc/us/{'-'.join(player.split('#'))}/complete"
     data = requests.get(url).json()

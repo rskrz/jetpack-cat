@@ -10,7 +10,7 @@ async def on_ready():
     print("|    |\__/,|   (`\\")
     print("|  _.|o o  |_   ) )")
     print("|-(((---(((--------")
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game('jetpackcat.tech'))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game('Meow'))
     await update_team.start()
     await get_matches.start()
 

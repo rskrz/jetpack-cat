@@ -14,6 +14,106 @@ async def on_ready():
     await update_team.start()
     await get_matches.start()
 
+@bot.event
+async def on_raw_reaction_add(payload):
+    m_id = payload.message_id
+    role = None
+    if m_id == 739271672883839096:
+        guild_id = payload.guild_id
+        guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
+        if payload.emoji.name == "🌽":
+            role = discord.utils.get(guild.roles, name="Iowa Attendee")
+        if payload.emoji.name == "🌎":
+            role = discord.utils.get(guild.roles, name="Iowa Affiliate")
+        if payload.emoji.name == "nut":
+            role = discord.utils.get(guild.roles, name="SCP")
+        if payload.emoji.name == "⛏️":
+            role = discord.utils.get(guild.roles, name="Minecraft")
+        if role is None:
+            channel = discord.utils.find(lambda c: c.id == payload.channel_id, guild.channels)
+            messages = await channel.history(limit=5).flatten()
+            msg = discord.utils.find(lambda s: s.id == m_id, messages)
+            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+            await msg.remove_reaction(payload.emoji, member)
+    if m_id == 739271678680498177:
+        guild_id = payload.guild_id
+        guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
+        if payload.emoji.name == "PugChamp":
+            role = discord.utils.get(guild.roles, name="PUGs")
+        if payload.emoji.name == "Dps":
+            role = discord.utils.get(guild.roles, name="Damage")
+        if payload.emoji.name == "Tank":
+            role = discord.utils.get(guild.roles, name="Tank")
+        if payload.emoji.name == "Support":
+            role = discord.utils.get(guild.roles, name="Support")
+        if role is None:
+            channel = discord.utils.find(lambda c: c.id == payload.channel_id, guild.channels)
+            messages = await channel.history(limit=5).flatten()
+            msg = discord.utils.find(lambda s: s.id == m_id, messages)
+            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+            await msg.remove_reaction(payload.emoji, member)
+    if role is not None:
+        member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+        if member is not None:
+            await member.add_roles(role)
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+    m_id = payload.message_id
+    role = None
+    if m_id == 739271672883839096:
+        guild_id = payload.guild_id
+        guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
+        if payload.emoji.name == "🌽":
+            role = discord.utils.get(guild.roles, name="Iowa Attendee")
+        if payload.emoji.name == "🌎":
+            role = discord.utils.get(guild.roles, name="Iowa Affiliate")
+        if payload.emoji.name == "nut":
+            role = discord.utils.get(guild.roles, name="SCP")
+        if payload.emoji.name == "⛏️":
+            role = discord.utils.get(guild.roles, name="Minecraft")
+    if m_id == 739271678680498177:
+        guild_id = payload.guild_id
+        guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
+        if payload.emoji.name == "PugChamp":
+            role = discord.utils.get(guild.roles, name="PUGs")
+        if payload.emoji.name == "Dps":
+            role = discord.utils.get(guild.roles, name="Damage")
+        if payload.emoji.name == "Tank":
+            role = discord.utils.get(guild.roles, name="Tank")
+        if payload.emoji.name == "Support":
+            role = discord.utils.get(guild.roles, name="Support")
+    if role is not None:
+        member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+        if member is not None:
+            await member.remove_roles(role)
+
+@bot.command(hidden=True, enabled=False)
+async def roles_msg(ctx):
+    embed = discord.Embed(title="Click on a reaction emote to add a role.", description="Remove your reaction to remove the role.", color=0xff8040)
+    await ctx.send(embed=embed)
+    msg1 = ("__**Community Roles**__\n"
+        ":corn: <@&659564388797120553>\n"
+        ":earth_americas: <@&659844060303065088>\n"
+        "<:nut:721230312427880499> <@&707072193980530688>\n"
+        ":pick: <@&739251039353569354>")
+    m1 = await ctx.send(msg1)
+    print(m1.id)
+    emojis1 = ["🌽","🌎", "<:nut:721230312427880499>", "⛏️"]
+    for e1 in emojis1:
+        await m1.add_reaction(e1)
+    msg2 = ("__**PUG Roles**__\n"
+        "<:PugChamp:721231566537359400> <@&739248591343714414>\n"
+        "<:Dps:619262646834692106> <@&739249474924183662>\n"
+        "<:Tank:619262646885154846> <@&739249417173073931>\n"
+        "<:Support:619262646708863007> <@&739249455617933313>\n")
+    m2 = await ctx.send(msg2)
+    print(m2.id)
+    emojis2 = ["<:PugChamp:721231566537359400>","<:Dps:619262646834692106>","<:Tank:619262646885154846>","<:Support:619262646708863007>",]
+    for e2 in emojis2:
+        await m2.add_reaction(e2)
+
+
 def owl_schedule(week : int):
     import requests
     from datetime import datetime
@@ -318,12 +418,12 @@ def find_team(url, team_name):
     team_id = homeTeam["id"] if homeTeam["name"] != team_name else record["visitorTeamCard"]["id"]
     return f"https://gamebattles.majorleaguegaming.com/pc/overwatch/team/{team_id}"
 
-@bot.command(hidden=True)
+@bot.command(hidden=True, enabled=False)
 async def start_match_scheduler(ctx):
     get_matches.start()
     await ctx.send("Starting match scheduler...")
 
-@bot.command(hidden=True)
+@bot.command(hidden=True, enabled=False)
 async def stop_match_scheduler(ctx):
     get_matches.stop()
     await ctx.send("Stopping match scheduler...")
@@ -352,12 +452,12 @@ async def update_team():
     await black_channel.edit(name=f"🖤 Black Team SR: {h_black}")
     print("Update Scheduler Loop")
 
-@bot.command(hidden=True)
+@bot.command(hidden=True, enabled=False)
 async def start_update_scheduler(ctx):
     update_team.start()
     await ctx.send("Starting update scheduler...")
 
-@bot.command(hidden=True)
+@bot.command(hidden=True, enabled=False)
 async def stop_update_scheduler(ctx):
     update_team.cancel()
     await ctx.send("Stopping update scheduler...")

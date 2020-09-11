@@ -22,5 +22,14 @@ class General(commands.Cog):
         output = "".join([heroes_only.get(heroes[num]) for num in num_list])
         await ctx.send(output)
 
+    @commands.command()    
+    async def roleq(self, ctx):
+        from helpers import dps_heroes, tank_heroes, support_heroes
+        import random
+        heroes = [tank_heroes,dps_heroes,support_heroes]
+        emojis = [random.sample(list(i.values()),2)[0:2] for i in heroes]
+        output = "".join(["".join(e) for e in emojis])
+        await ctx.send(output)
+
 def setup(bot):
     bot.add_cog(General(bot))

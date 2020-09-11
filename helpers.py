@@ -95,7 +95,49 @@ heroes_only = {
         "wreckingball" : "<:Wrecking_Ball:591708295715356692>",
         "zarya" : "<:Zarya:591708295539195920>",
         "zenyatta" : "<:Zenyatta:591708295560036359>",
-        }
+}
+
+dps_heroes = {
+    "ashe" : "<:Ashe:591714749486465045>",
+    "bastion": "<:Bastion:591708294826164225>",
+    "doomfist" : "<:Doomfist:591708295396458498>",
+    "echo" : "<:Echo:701922251381145660>",
+    "genji" : "<:Genji:591708295484407818>",
+    "hanzo" : "<:Hanzo:591708295501185034>",
+    "junkrat" : "<:Junkrat:591708295409172521>",
+    "mccree" : "<:McCree:591708295673151509>",
+    "mei" : "<:Mei:591708296092712971>",
+    "pharah" : "<:Pharah:591708295522156544>",
+    "reaper" : "<:Reaper:591708295388200992>",
+    "soldier76" : "<:Soldier76:591708295719419922>",
+    "sombra" : "<:Sombra:591708295484538892>",
+    "symmetra" : "<:Symmetra:591708295413235717>",
+    "torbjorn" : "<:Torbjorn:591708295249526815>",
+    "tracer" : "<:Tracer:591708295471824906>",
+    "widowmaker" : "<:Widowmaker:591708295555710995>",
+
+}
+
+tank_heroes = {
+    "dVa": "<:DVa:591709680632594437>",
+    "orisa" : "<:Orisa:591708295551516672>",
+    "reinhardt" : "<:Reinhardt:591708295509835807>",
+    "roadhog" : "<:Roadhog:591708295589396480>",
+    "sigma" : "<:Sigma:619259776144113664>",
+    "winston" : "<:Winston:591708295769882624>",
+    "wreckingball" : "<:Wrecking_Ball:591708295715356692>",
+    "zarya" : "<:Zarya:591708295539195920>",
+}
+
+support_heroes = {
+    "ana" : "<:Ana:591708294477905952>",
+    "baptiste" : "<:Baptiste:591708294951862413>",
+    "brigitte": "<:Brigitte:591708295182680065>",
+    "lucio" : "<:Lucio:591708295383744513>",
+    "mercy" : "<:Mercy:591708295555973140>",
+    "moira" : "<:Moira:591708295287406603>",
+    "zenyatta" : "<:Zenyatta:591708295560036359>",
+}
 
 teams = {
         ("ATL","atl","atlanta","reign") : ["Atlanta Reign",0x910f1b,"https://bnetcmsus-a.akamaihd.net/cms/page_media/32/32MTX0PLEDY31542673991836.png","<:reign:546095303909048340>","7698"],

@@ -26,7 +26,7 @@ async def on_raw_reaction_add(payload):
         if payload.emoji.name == "🌎":
             role = discord.utils.get(guild.roles, name="Iowa Affiliate")
         if payload.emoji.name == "nut":
-            role = discord.utils.get(guild.roles, name="SCP")
+            role = discord.utils.get(guild.roles, name="Other Games")
         if payload.emoji.name == "⛏️":
             role = discord.utils.get(guild.roles, name="Minecraft")
         if role is None:

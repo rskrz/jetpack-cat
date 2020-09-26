@@ -399,8 +399,8 @@ async def get_matches():
     import datetime
     now = datetime.datetime.now()
     ch = bot.get_channel(660638084018471002)
-    gold = "https://gb-api.majorleaguegaming.com/api/web/v1/team-matches-screen/team/34049268?pageSize=5&pageNumber=1"
-    black = "https://gb-api.majorleaguegaming.com/api/web/v1/team-matches-screen/team/34064172?pageSize=5&pageNumber=1"
+    gold = "https://gb-api.majorleaguegaming.com/api/web/v1/team-matches-screen/team/34935093?pageSize=5&pageNumber=1"
+    black = "https://gb-api.majorleaguegaming.com/api/web/v1/team-matches-screen/team/34935109?pageSize=5&pageNumber=1"
     if now.weekday() == 2:
         gold_opp = find_team(gold,"Oddly Omnic Gold")
         await get_team_sr(ch,gold_opp)
@@ -440,8 +440,8 @@ async def after_get_matches():
 async def update_team():
     gold_channel = bot.get_channel(661330736913055754)
     black_channel = bot.get_channel(676941215106596864)
-    gold_info = team_helper("34049268")
-    black_info = team_helper("34064172")
+    gold_info = team_helper("34935093")
+    black_info = team_helper("34935109")
     h_avg_list_gold = [highest for player in gold_info if (highest:=max(list(player[3].values()))[0]) != 0]
     sort_gold = sorted(h_avg_list_gold)[::-1][:6]
     h_gold = sum(sort_gold)//len(sort_gold)

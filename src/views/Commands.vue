@@ -52,23 +52,22 @@
               td.dtc-ns.dn .role
         h2.f5.fw1.mb5-l *Usage format: .[command|alias] denotes an alias for a command
       .commands-bg.pa3.br4.tan.w-25.bot.db-l.dn
-        img(v-bind:src="require('../assets/images/'+active)").br2
-      
-    
-    
+        picture
+          source(type="image/webp" :src="require('../assets/images/'+active)")
+          source(type="image/png" :src="require('../assets/images/'+active)")
+          img(:src="require('../assets/images/'+active)" alt="Command Output").br2
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 @Component({
-  name:'Commands'
+  name: "Commands"
 })
-
 export default class Commands extends Vue {
   data() {
     return {
       active: "tespa.png"
-    }
+    };
   }
 }
 </script>

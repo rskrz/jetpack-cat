@@ -125,3 +125,7 @@ pass.txt
 .vscode
 node_modules
 dist
+
+docs/
+
+yarn.lock

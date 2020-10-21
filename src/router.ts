@@ -1,7 +1,10 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
-import Commands from "./views/Commands.vue"
+
+const Home = () =>
+  import(/* webpackChunkName: "Home" */ "./views/Home.vue");
+const Commands = () =>
+  import(/* webpackChunkName: "Commands" */ "./views/Commands.vue");
 
 Vue.use(Router);
 

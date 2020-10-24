@@ -31,5 +31,35 @@ class General(commands.Cog):
         output = "".join(["".join(e) for e in emojis])
         await ctx.send(output)
 
+    @commands.commands()
+    async def covid(self, ctx):
+        from bs4 import BeautifulSoup
+        import requests
+        r = requests.get('https://medcom.uiowa.edu/theloop/covid-19-by-the-numbers')
+        s = BeautifulSoup(r.content, 'html.parser')
+        results = [t.text for t in s.find_all('td')[5::3]]
+        output_message = '''**Current COVID-19 adult inpatients**
+        {}
+
+        **Current COVID-19 pediatric inpatients (age <18 years old)**
+        {}
+
+        **% Positive symptomatic COVID-19 test results**
+        {}
+
+        **Number of UI Health Care employees who have tested positive for COVID-19**
+        {}
+
+        **Telehealth Influenza-Like-Illness (ILI) screening (telephone & video appointments)**
+        {}
+
+        **ILI clinic visits**
+        {}
+
+        '''.format(*results)
+        embed = discord.Embed(title="University of Iowa COVID-19 data", description=output_message, color=0xff0000)
+        embed.set_footer(name="Sourced from UIHC loop")
+        await ctx.send(embed)
+
 def setup(bot):
     bot.add_cog(General(bot))

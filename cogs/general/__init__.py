@@ -37,7 +37,7 @@ class General(commands.Cog):
         import requests
         r = requests.get('https://medcom.uiowa.edu/theloop/covid-19-by-the-numbers')
         s = BeautifulSoup(r.content, 'html.parser')
-        results = [t.text for t in s.find_all('td')[5::3]]
+        results = [t.text for t in s.find_all('td')[4::3]]
         output_message = '''**Current COVID-19 adult inpatients**
         {}
 

@@ -31,7 +31,7 @@ class General(commands.Cog):
         output = "".join(["".join(e) for e in emojis])
         await ctx.send(output)
 
-    @commands.commands()
+    @commands.command()
     async def covid(self, ctx):
         from bs4 import BeautifulSoup
         import requests
@@ -58,8 +58,8 @@ class General(commands.Cog):
 
         '''.format(*results)
         embed = discord.Embed(title="University of Iowa COVID-19 data", description=output_message, color=0xff0000)
-        embed.set_footer(name="Sourced from UIHC loop")
-        await ctx.send(embed)
+        embed.set_footer(text="Sourced from UIHC loop")
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(General(bot))

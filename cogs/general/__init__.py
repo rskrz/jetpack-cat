@@ -64,7 +64,7 @@ class General(commands.Cog):
     @commands.command()
     async def cf(self, ctx):
         from random import choice
-        return ctx.send(choice(['Heads', 'Tails']))
+        await ctx.send(choice(['Heads', 'Tails']))
 
 def setup(bot):
     bot.add_cog(General(bot))

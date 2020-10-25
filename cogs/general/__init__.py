@@ -61,5 +61,10 @@ class General(commands.Cog):
         embed.set_footer(text="Sourced from UIHC loop")
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def cf(self, ctx):
+        from random import choice
+        return ctx.send(choice(['Heads', 'Tails']))
+
 def setup(bot):
     bot.add_cog(General(bot))

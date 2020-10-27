@@ -36,7 +36,6 @@ class Deck(object):
             self.build(enable_joker)
 
         def build(self, enable_joker):
-            #face_mappings = {1: 'A', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: 'J', 12: 'Q', 13: 'K'}
             self.cards = [(v, s) for v in range (1, 14) for s in ["S", "C", "D", "H"]]
             if enable_joker:
                 self.cards += [('$', '$'), ('$', '$')]
@@ -53,8 +52,7 @@ class Games(commands.Cog):
         self.decks = [None]
 
     def create_embed(self,card):
-        embed = discord.Embed(title=cards_dict[card][0])
-        embed = discord.Embed(title=cards_dict[card][0],description=f"```md\n{cards_dict[card][1]}\n"+"".join(["=" for i in range(0,len(cards_dict[card][1]))])+"```")
+        embed = discord.Embed(title=cards_dict[card][0],description=f"```yaml\n{cards_dict[card][1]}\n```")
         embed.set_footer(text="Circle of Death",icon_url="https://cdn.discordapp.com/attachments/659602898585518100/769760580554457098/plastic-cup.png")
         return embed
 

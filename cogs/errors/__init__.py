@@ -10,6 +10,7 @@ class ErrorHandler(commands.Cog):
     
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
+        print(error)
         ignored = (commands.CommandNotFound)
 
         msg = "Please message <@73578715598032896> for assistance."

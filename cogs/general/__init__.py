@@ -11,7 +11,7 @@ class General(commands.Cog):
         roles = ['Damage','Tank','Support']
         await ctx.send(random.choice(roles))
 
-    @commands.command(aliases=['comp', 'heroes'])    
+    @commands.command(aliases=['comp', 'heroes'])
     async def hero(self, ctx, num=1):
         from helpers import heroes_only
         import random
@@ -22,7 +22,7 @@ class General(commands.Cog):
         output = "".join([heroes_only.get(heroes[num]) for num in num_list])
         await ctx.send(output)
 
-    @commands.command()    
+    @commands.command()
     async def roleq(self, ctx):
         from helpers import dps_heroes, tank_heroes, support_heroes
         import random
@@ -30,6 +30,10 @@ class General(commands.Cog):
         emojis = [random.sample(list(i.values()),2)[0:2] for i in heroes]
         output = "".join(["".join(e) for e in emojis])
         await ctx.send(output)
+
+    @commands.command()
+    async def cat(self, ctx):
+        await ctx.send(embed=discord.Embed(title="", url="https://cataas.com/cat"))
 
 def setup(bot):
     bot.add_cog(General(bot))

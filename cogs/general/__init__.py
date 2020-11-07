@@ -66,9 +66,5 @@ class General(commands.Cog):
         from random import choice
         return ctx.send(choice(['Heads', 'Tails']))
 
-    @commands.command()
-    async def cat(self, ctx):
-        await ctx.send(embed=discord.Embed(title="", url="https://cataas.com/cat"))
-
 def setup(bot):
     bot.add_cog(General(bot))

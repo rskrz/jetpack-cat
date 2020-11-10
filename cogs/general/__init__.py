@@ -64,7 +64,33 @@ class General(commands.Cog):
     @commands.command()
     async def cf(self, ctx):
         from random import choice
-        return ctx.send(choice(['Heads', 'Tails']))
+        await ctx.send(choice(['Heads', 'Tails']))
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, ctx):
+        channel = await self.bot.fetch_channel(ctx.channel_id)
+        message = await channel.fetch_message(ctx.message_id)
+        user = await self.bot.fetch_user(ctx.user_id)
+        emoji = ctx.emoji
+        if emoji == '👍':
+            room_name = message.title.split(':')[1]
+            role = discord.utils.get(guild.roles, name=room_name)
+            await user.add_roles(role)
+            await ctx.msg.channel.send(embed=response)
+
+    @commands.command()
+    async def room(self, ctx, *args):
+        chars = 'abcdefghijklmnopqrstuvwxyz-'
+        error = discord.Embed(title="Syntax Error", description="Syntax error in command. Please try \".help room\".")
+        room_name = args[0]
+        room_name = room_name.replace(' ', '-')
+        #assert len(set(room_name)-set(chars)) and len(room_name) < 32
+        #await bot.create_channel(ctx.message.server, room_name, type=discord.ChannelType.text)
+        embed = discord.Embed(title=f"Join temportary room: {room_name}", description=f"React to join the {room_name} room for 24 h.")
+        msg = await ctx.send(embed=embed)
+        for emoji in ('👍', '👎'):
+            await msg.add_reaction(emoji)
+
 
 def setup(bot):
     bot.add_cog(General(bot))

@@ -18,9 +18,10 @@ async def on_ready():
 async def on_raw_reaction_add(payload):
     m_id = payload.message_id
     role = None
+    guild_id = payload.guild_id
+    guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
+    member = await guild.fetch_member(payload.user_id)
     if m_id == 739271672883839096:
-        guild_id = payload.guild_id
-        guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
         if payload.emoji.name == "🌽":
             role = discord.utils.get(guild.roles, name="Iowa Attendee")
         if payload.emoji.name == "🌎":
@@ -33,7 +34,6 @@ async def on_raw_reaction_add(payload):
             channel = discord.utils.find(lambda c: c.id == payload.channel_id, guild.channels)
             messages = await channel.history(limit=5).flatten()
             msg = discord.utils.find(lambda s: s.id == m_id, messages)
-            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
             await msg.remove_reaction(payload.emoji, member)
     if m_id == 739271678680498177:
         guild_id = payload.guild_id
@@ -50,10 +50,8 @@ async def on_raw_reaction_add(payload):
             channel = discord.utils.find(lambda c: c.id == payload.channel_id, guild.channels)
             messages = await channel.history(limit=5).flatten()
             msg = discord.utils.find(lambda s: s.id == m_id, messages)
-            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
             await msg.remove_reaction(payload.emoji, member)
     if role is not None:
-        member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
         if member is not None:
             await member.add_roles(role)
 
@@ -61,9 +59,10 @@ async def on_raw_reaction_add(payload):
 async def on_raw_reaction_remove(payload):
     m_id = payload.message_id
     role = None
+    guild_id = payload.guild_id
+    guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
+    member = await guild.fetch_member(payload.user_id)
     if m_id == 739271672883839096:
-        guild_id = payload.guild_id
-        guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
         if payload.emoji.name == "🌽":
             role = discord.utils.get(guild.roles, name="Iowa Attendee")
         if payload.emoji.name == "🌎":
@@ -84,7 +83,6 @@ async def on_raw_reaction_remove(payload):
         if payload.emoji.name == "Support":
             role = discord.utils.get(guild.roles, name="Support")
     if role is not None:
-        member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
         if member is not None:
             await member.remove_roles(role)
 

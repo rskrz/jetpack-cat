@@ -4,6 +4,7 @@ from discord.ext import commands
 class General(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
+        self.rooms = []
 
     @commands.command()
     async def role(self, ctx):
@@ -65,32 +66,63 @@ class General(commands.Cog):
     async def cf(self, ctx):
         from random import choice
         await ctx.send(choice(['Heads', 'Tails']))
+    """
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        if payload.user_id != self.bot.user.id:
+            if r:= next((room for room in self.rooms if payload.message_id==room.room_id),None):
+                channel = self.bot.get_channel(payload.channel_id)
+                msg = discord.utils.get(await channel.history(limit=100).flatten(), channel=channel)
+                title = msg.embeds[0].title
+                desc = msg.embeds[0].description
+                desc += f"\n {payload.member}"
+                embed = discord.Embed(title=title, description=desc)
+                guild_id = payload.guild_id
+                guild = discord.utils.find(lambda g : g.id == guild_id, self.bot.guilds)
+                role = discord.utils.get(guild.roles, name=r.room_name)
+                await msg.edit(embed=embed)
+                await payload.member.add_roles(role)
 
     @commands.Cog.listener()
-    async def on_raw_reaction_add(self, ctx):
-        channel = await self.bot.fetch_channel(ctx.channel_id)
-        message = await channel.fetch_message(ctx.message_id)
-        user = await self.bot.fetch_user(ctx.user_id)
-        emoji = ctx.emoji
-        if emoji == '👍':
-            room_name = message.title.split(':')[1]
-            role = discord.utils.get(guild.roles, name=room_name)
-            await user.add_roles(role)
-            await ctx.msg.channel.send(embed=response)
+    async def on_raw_reaction_remove(self, payload):
+        if payload.user_id != self.bot.user.id:
+            if r:= next((room for room in self.rooms if payload.message_id==room.room_id),None):
+                channel = self.bot.get_channel(payload.channel_id)
+                msg = discord.utils.get(await channel.history(limit=100).flatten(), channel=channel)
+                title = msg.embeds[0].title
+                desc = msg.embeds[0].description
+                guild_id = payload.guild_id
+                guild = discord.utils.find(lambda g : g.id == guild_id, self.bot.guilds)
+                member = await guild.fetch_member(payload.user_id)
+                user_str = str(self.bot.get_user(member.id))
+                if user_str in desc:
+                    desc = desc.replace(user_str,"")
+                    embed = discord.Embed(title=title, description=desc)
+                    role = discord.utils.get(guild.roles, name=r.room_name)
+                    await msg.edit(embed=embed)
+                    await member.remove_roles(role)
 
     @commands.command()
     async def room(self, ctx, *args):
-        chars = 'abcdefghijklmnopqrstuvwxyz-'
-        error = discord.Embed(title="Syntax Error", description="Syntax error in command. Please try \".help room\".")
-        room_name = args[0]
-        room_name = room_name.replace(' ', '-')
-        #assert len(set(room_name)-set(chars)) and len(room_name) < 32
-        #await bot.create_channel(ctx.message.server, room_name, type=discord.ChannelType.text)
-        embed = discord.Embed(title=f"Join temportary room: {room_name}", description=f"React to join the {room_name} room for 24 h.")
-        msg = await ctx.send(embed=embed)
-        for emoji in ('👍', '👎'):
-            await msg.add_reaction(emoji)
+        room_name = "Room: "+" ".join(args)
+        guild = ctx.message.guild
+        if not any(role.name == room_name for role in guild.roles):
+            embed = discord.Embed(title=room_name, description="React with 👍 to join and remove reaction to leave.")
+            room_msg = await ctx.send(embed=embed)
+            r = Room(room_msg.id,room_name)
+            self.rooms.append(r)
+            await room_msg.add_reaction('👍')
+            await guild.create_role(name=room_name)
+        else:
+            await ctx.send("That room already exists.")
 
+class Room:
+    room_id = 0
+    room_name = ""
 
+    def __init__(self, room_id, room_name):
+        self.room_id = room_id
+        self.room_name = room_name
+    """
 def setup(bot):
     bot.add_cog(General(bot))

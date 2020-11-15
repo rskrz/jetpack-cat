@@ -4,6 +4,7 @@ from discord.ext import commands
 class General(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
+        self.rooms = []
 
     @commands.command()
     async def role(self, ctx):
@@ -64,7 +65,64 @@ class General(commands.Cog):
     @commands.command()
     async def cf(self, ctx):
         from random import choice
-        return ctx.send(choice(['Heads', 'Tails']))
+        await ctx.send(choice(['Heads', 'Tails']))
+    """
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        if payload.user_id != self.bot.user.id:
+            if r:= next((room for room in self.rooms if payload.message_id==room.room_id),None):
+                channel = self.bot.get_channel(payload.channel_id)
+                msg = discord.utils.get(await channel.history(limit=100).flatten(), channel=channel)
+                title = msg.embeds[0].title
+                desc = msg.embeds[0].description
+                desc += f"\n {payload.member}"
+                embed = discord.Embed(title=title, description=desc)
+                guild_id = payload.guild_id
+                guild = discord.utils.find(lambda g : g.id == guild_id, self.bot.guilds)
+                role = discord.utils.get(guild.roles, name=r.room_name)
+                await msg.edit(embed=embed)
+                await payload.member.add_roles(role)
 
+    @commands.Cog.listener()
+    async def on_raw_reaction_remove(self, payload):
+        if payload.user_id != self.bot.user.id:
+            if r:= next((room for room in self.rooms if payload.message_id==room.room_id),None):
+                channel = self.bot.get_channel(payload.channel_id)
+                msg = discord.utils.get(await channel.history(limit=100).flatten(), channel=channel)
+                title = msg.embeds[0].title
+                desc = msg.embeds[0].description
+                guild_id = payload.guild_id
+                guild = discord.utils.find(lambda g : g.id == guild_id, self.bot.guilds)
+                member = await guild.fetch_member(payload.user_id)
+                user_str = str(self.bot.get_user(member.id))
+                if user_str in desc:
+                    desc = desc.replace(user_str,"")
+                    embed = discord.Embed(title=title, description=desc)
+                    role = discord.utils.get(guild.roles, name=r.room_name)
+                    await msg.edit(embed=embed)
+                    await member.remove_roles(role)
+
+    @commands.command()
+    async def room(self, ctx, *args):
+        room_name = "Room: "+" ".join(args)
+        guild = ctx.message.guild
+        if not any(role.name == room_name for role in guild.roles):
+            embed = discord.Embed(title=room_name, description="React with 👍 to join and remove reaction to leave.")
+            room_msg = await ctx.send(embed=embed)
+            r = Room(room_msg.id,room_name)
+            self.rooms.append(r)
+            await room_msg.add_reaction('👍')
+            await guild.create_role(name=room_name)
+        else:
+            await ctx.send("That room already exists.")
+
+class Room:
+    room_id = 0
+    room_name = ""
+
+    def __init__(self, room_id, room_name):
+        self.room_id = room_id
+        self.room_name = room_name
+    """
 def setup(bot):
     bot.add_cog(General(bot))
